@@ -19,14 +19,16 @@
         
         // --- !!! PASTE YOUR FIREBASE CONFIG HERE !!! ---
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyAhbTjjNsL32-_ElgZR1V0XuMWtRrlnNVM",
+            authDomain: "cinegenesis-os.firebaseapp.com",
+            projectId: "cinegenesis-os",
+            storageBucket: "cinegenesis-os.firebasestorage.app",
+            messagingSenderId: "441370974988",
+            appId: "1:441370974988:web:a2453282a4344c201e8729"
         };
-        // ------------------------------------------------
+        // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);

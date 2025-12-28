@@ -5,27 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CineGenesis: Clean Slate</title>
     
+    <!-- PWA MANIFEST -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#050505">
+    
     <!-- CORE LIBRARIES -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- FIREBASE SDK (Modular Bridge - Fixed) -->
+    <!-- FIREBASE SDK (Browser Compatible - The Working Engine) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
-        // --- YOUR REAL KEYS (PRE-FILLED) ---
+        // ===============================================================
+        //  ⚠️ PASTE YOUR REAL FIREBASE KEYS BELOW ⚠️
+        // ===============================================================
         const firebaseConfig = {
-            apiKey: "AIzaSyAhbTjjNsL32-_ElgZR1V0XuMWtRrlnNVM",
+           apiKey: "AIzaSyAhbTjjNsL32-_ElgZR1V0XuMWtRrlnNVM",
             authDomain: "cinegenesis-os.firebaseapp.com",
             projectId: "cinegenesis-os",
             storageBucket: "cinegenesis-os.firebasestorage.app",
             messagingSenderId: "441370974988",
             appId: "1:441370974988:web:a2453282a4344c201e8729"
         };
+
+        // ===============================================================
 
         try {
             // INITIALIZE FIREBASE (SINGLE INSTANCE)
@@ -34,19 +43,19 @@
             window.db = getFirestore(app);
             window.googleProvider = new GoogleAuthProvider();
             
-            // BRIDGE FUNCTIONS (Exposed to React)
+            // BRIDGE FUNCTIONS (EXPOSED TO WINDOW)
             window.fbSignIn = signInWithPopup;
             window.fbSignOut = signOut;
             window.fbOnAuth = onAuthStateChanged;
             
-            console.log("OS: Iron Spine Secure.");
+            console.log("OS: Iron Spine Bridge Active.");
         } catch (e) {
             console.error("OS: Spine Connection Error.", e);
         }
     </script>
 
     <!-- FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet">
     
     <!-- CONFIG -->
     <script>
@@ -75,18 +84,24 @@
     </script>
     
     <style>
-        body { background-color: #050505; color: #E5E5E5; height: 100vh; overflow: hidden; margin: 0; -webkit-font-smoothing: antialiased; }
+        body { background-color: #050505; color: #E5E5E5; height: 100vh; overflow: hidden; margin: 0; font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
         
         /* GLASS UI */
         .glass-hud { background: rgba(8, 8, 12, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255, 255, 255, 0.08); box-shadow: -20px 0 50px -10px rgba(0,0,0,0.8); }
         .glass-panel { background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); }
         .btn-ignite { background: radial-gradient(circle at center, #FFF, #E5E5E5); box-shadow: 0 0 30px rgba(255, 255, 255, 0.1); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .btn-ignite:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(212, 175, 55, 0.5); }
-        .oracle-scanner { background: linear-gradient(180deg, rgba(212, 175, 55, 0) 0%, rgba(212, 175, 55, 0.2) 50%, rgba(212, 175, 55, 0) 100%); height: 2px; width: 100%; position: absolute; top: 0; animation: scanDown 2s ease-in-out infinite; }
-        @keyframes scanDown { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+        
+        /* KINETIC LAYERS */
         .kinetic-loop { position: absolute; inset: 0; transition: opacity 0.1s ease; mix-blend-mode: hard-light; }
         .kinetic-active { opacity: 1; animation: flash 0.1s infinite; }
         @keyframes flash { 0% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.05); filter: brightness(1.2); } 100% { transform: scale(1); } }
+        
+        /* ORACLE SCANNER */
+        .oracle-scanner { background: linear-gradient(180deg, rgba(212, 175, 55, 0) 0%, rgba(212, 175, 55, 0.2) 50%, rgba(212, 175, 55, 0) 100%); height: 2px; width: 100%; position: absolute; top: 0; animation: scanDown 2s ease-in-out infinite; }
+        @keyframes scanDown { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+        /* STUDIO ASSETS */
         .xray-active { opacity: 0.3 !important; filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(50deg) saturate(200%) !important; }
         .xray-grid { background-image: linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px); background-size: 40px 40px; perspective: 1000px; transform: rotateX(60deg) translateY(-100px) scale(2); opacity: 0; transition: opacity 0.5s ease; }
         .xray-visible { opacity: 1; animation: gridScroll 10s linear infinite; }
@@ -107,86 +122,28 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- INTERNAL ICONS ---
+        // --- ICONS ---
         const Icon = ({ name, size = 16, className = "" }) => {
             const s = size; const c = `stroke-current ${className}`; const p = { strokeWidth: 2, fill: "none", strokeLinecap: "round", strokeLinejoin: "round" };
-            
-            if (name === 'Activity') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>;
+            if (name === 'Lock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
             if (name === 'Zap') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>;
             if (name === 'Cpu') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>;
-            if (name === 'Briefcase') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>;
-            if (name === 'Lock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-            if (name === 'Unlock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>;
-            if (name === 'ArrowRight') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
-            if (name === 'Globe') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"/></svg>;
-            if (name === 'Sparkles') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.2-1.2L12 3Z"/></svg>;
-            if (name === 'Play') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="5 3 19 12 5 21 5 3"/></svg>;
-            if (name === 'Plus') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
-            if (name === 'Check') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polyline points="20 6 9 17 4 12"/></svg>;
-            if (name === 'GitBranch') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>;
-            if (name === 'Database') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
-            if (name === 'Crown') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>;
-            if (name === 'Server') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>;
+            if (name === 'Activity') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>;
+            if (name === 'Login') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>;
             if (name === 'Eye') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
-            if (name === 'ScanFace') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9 12h.01"/><path d="M15 12h.01"/></svg>;
-            if (name === 'Layers') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>;
-            if (name === 'Grid') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>;
-            if (name === 'User') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
-            if (name === 'Ticket') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>;
-            if (name === 'Calendar') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
-            if (name === 'FastForward') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg>;
+            if (name === 'Briefcase') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>;
+            if (name === 'Server') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>;
+            if (name === 'Sparkles') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.2-1.2L12 3Z"/></svg>;
             if (name === 'Network') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>;
-            if (name === 'ZoomIn') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>;
-            if (name === 'TrendingUp') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
-            if (name === 'LogIn') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>;
+            if (name === 'FastForward') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg>;
+            if (name === 'Grid') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>;
             return null;
-        };
-
-        // --- AUTH HOOK ---
-        const useAuth = () => {
-            const [user, setUser] = useState(null);
-            const [loading, setLoading] = useState(true);
-
-            useEffect(() => {
-                const checkFirebase = setInterval(() => {
-                    if (window.auth && window.fbOnAuth) {
-                        clearInterval(checkFirebase);
-                        window.fbOnAuth(window.auth, (u) => {
-                            setUser(u);
-                            setLoading(false);
-                        });
-                    }
-                }, 100);
-                return () => clearInterval(checkFirebase);
-            }, []);
-
-            const signIn = async () => {
-                if (!window.auth || !window.fbSignIn) {
-                    alert("Firebase Bridge Missing!");
-                    return;
-                }
-                try {
-                    await window.fbSignIn(window.auth, window.googleProvider);
-                } catch (error) {
-                    console.error("Login Failed", error);
-                    alert("Login Failed: " + error.message);
-                }
-            };
-
-            return { user, loading, signIn };
         };
 
         // --- SOUND ENGINE ---
         const SoundEngine = {
             ctx: null,
-            init: function() { 
-                if (!this.ctx) {
-                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
-                }
-                if (this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
-            },
+            init: function() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
             playTone: function(freq, type, duration, vol = 0.1) {
                 this.init();
                 const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
@@ -212,20 +169,18 @@
 
         // --- COMPONENTS ---
 
-        // KINETIC SYNC
+        // KINETIC SYNC (RESTORED TO CLEAN SLATE PROPORTIONS)
         const KineticSync = ({ onComplete }) => {
             const [syncing, setSyncing] = useState(false);
             const [mode, setMode] = useState(0);
             const timer = useRef(null);
             const loops = [{type:'VELOCITY', bg:'linear-gradient(45deg, #ff0000, #000)'}, {type:'DREAM', bg:'radial-gradient(circle, #0000ff, #000)'}, {type:'GLITCH', bg:'repeating-linear-gradient(90deg, #333, #000 10px)'}];
 
-            const startScan = () => { 
-                SoundEngine.init();
-                setIsScanning(true); 
-                if (intervalRef.current) clearInterval(intervalRef.current);
-                intervalRef.current = setInterval(() => { setActiveLoop(p => (p + 1) % loops.length); SoundEngine.playStrobe(); }, 150); 
+            const start = () => { 
+                SoundEngine.init(); setSyncing(true); 
+                timer.current = setInterval(() => { setMode(m => (m + 1) % 3); SoundEngine.playStrobe(); }, 150); 
             };
-            const stopScan = () => { 
+            const stop = () => { 
                 if (!isScanning) return;
                 setIsScanning(false); 
                 clearInterval(intervalRef.current); 
@@ -234,16 +189,17 @@
                 setTimeout(onComplete, 500); 
             };
             
+            // Helper state for above logic
             const [activeLoop, setActiveLoop] = useState(0); 
             const [isScanning, setIsScanning] = useState(false);
 
-            const start = () => {
+            const startScan = () => {
                  SoundEngine.init();
                  setIsScanning(true);
                  if (timer.current) clearInterval(timer.current);
                  timer.current = setInterval(() => { setActiveLoop(p => (p + 1) % loops.length); SoundEngine.playStrobe(); }, 150);
             };
-            const stop = () => {
+            const stopScan = () => {
                 if (!isScanning) return;
                 setIsScanning(false);
                 clearInterval(timer.current);
@@ -252,8 +208,8 @@
             };
 
             return (
-                <div className="w-full flex-1 flex flex-col items-center justify-center h-full relative overflow-hidden bg-black select-none" onMouseDown={start} onMouseUp={stop} onMouseLeave={stop} onTouchStart={start} onTouchEnd={stop}>
-                    <div className="absolute inset-0 z-0">{loops.map((l, i) => (<div key={i} className={`kinetic-loop ${i === activeLoop && isScanning ? 'kinetic-active' : ''}`} style={{ background: l.bg }}></div>))}</div>
+                <div className="w-full flex-1 flex flex-col items-center justify-center h-full relative overflow-hidden bg-black select-none" onMouseDown={startScan} onMouseUp={stopScan} onMouseLeave={stopScan} onTouchStart={startScan} onTouchEnd={stopScan}>
+                    <div className="absolute inset-0 z-0">{loops.map((l, i) => (<div key={i} className={`kinetic-loop ${i === activeLoop ? 'kinetic-active' : ''}`} style={{ background: l.bg }}></div>))}</div>
                     <div className="relative z-10 text-center space-y-8">
                         <h2 className="text-3xl font-bold text-white tracking-widest uppercase mix-blend-difference">{isScanning ? 'SYNCING RHYTHM...' : 'HOLD TO CALIBRATE'}</h2>
                         <div className="text-[80px] md:text-[120px] font-black text-transparent bg-clip-text bg-white opacity-20 select-none">{loops[activeLoop].type}</div>
@@ -272,7 +228,7 @@
                     <div className="relative z-10 w-96 glass-panel p-10 rounded-2xl text-center space-y-6">
                         <div className="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center border border-[#D4AF37]"><Icon name="Lock" size={24} className="text-[#D4AF37]" /></div>
                         <div><h2 className="text-2xl font-serif text-white tracking-widest">NEURAL LINK</h2><p className="text-[10px] text-gray-500 font-mono mt-2">ESTABLISH IDENTITY TO ACCESS OS</p></div>
-                        <button onClick={signIn} className="w-full py-3 bg-white hover:bg-gray-200 text-black font-bold text-xs rounded-lg tracking-widest transition-all flex items-center justify-center gap-2">{loading ? "CONNECTING..." : <><Icon name="LogIn" size={14} /> CONNECT IDENTITY</>}</button>
+                        <button onClick={signIn} className="w-full py-3 bg-white hover:bg-gray-200 text-black font-bold text-xs rounded-lg tracking-widest transition-all flex items-center justify-center gap-2">{loading ? "CONNECTING..." : <><Icon name="Login" size={14} /> CONNECT IDENTITY</>}</button>
                         <div className="text-[9px] text-gray-600">SECURE ENCRYPTED CONNECTION</div>
                     </div>
                 </div>
@@ -296,28 +252,69 @@
                     <div className="h-14 border-b border-white/10 flex items-center justify-between px-4 bg-black/40"><div className="flex items-center gap-2"><Icon name="Activity" size={14} className="text-veo-gold" /><span className="text-xs font-bold text-white tracking-widest">NEXUS</span></div><button onClick={() => { SoundEngine.playClick(); onClose(); }} className="text-gray-500 hover:text-white">✕</button></div>
                     <div className="p-3 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-b border-white/5 flex justify-between items-center"><span className="text-[10px] font-bold text-purple-400">SEASON ENDS</span><span className="text-[10px] font-mono text-white">12D : 04H</span></div>
                     <div className="p-4 bg-white/5 border-b border-white/5"><div className="flex justify-between items-center mb-3"><span className="text-[10px] text-gray-400">NET WORTH</span><span className="text-sm font-bold text-white font-mono">{balance.toLocaleString()} FLUX</span></div><button className="w-full py-2 rounded flex items-center justify-center gap-2 text-[10px] font-bold bg-veo-green/20 text-veo-green border border-veo-green/30"><Icon name="Server" size={12} className="animate-pulse" /> HIVE MINING: ACTIVE</button></div>
-                    <div className="p-4 space-y-4"><div className="bg-[#0f111a] border border-veo-gold/20 rounded-lg p-3"><h4 className="text-[10px] font-bold text-white mb-2 flex gap-2"><Icon name="Cpu" size={12} /> COMPUTE SWAP</h4><button className="w-full py-1.5 bg-veo-gold text-black text-[9px] font-bold rounded">TRADE EQUITY</button></div><div className="bg-white/5 border border-white/5 rounded-lg p-3"><div className="flex justify-between mb-1"><span className="text-[10px] text-gray-300 font-bold">Asset_01</span><span className="text-[9px] text-green-400">+450 CR</span></div><div className="text-[9px] text-gray-500">Viral (1.2M Views)</div></div></div>
+                    <div className="p-4 space-y-4"><div className="bg-[#0f111a] border border-veo-gold/20 rounded-lg p-3"><h4 className="text-[10px] font-bold text-white mb-2 flex gap-2"><Icon name="Cpu" size={12} /> COMPUTE SWAP</h4><button className="w-full py-1.5 bg-veo-gold text-black text-[9px] font-bold rounded">TRADE EQUITY</button></div><div className="bg-white/5 border border-white/5 rounded-lg p-3"><div className="flex justify-between mb-1"><span className="text-[10px] text-gray-300 font-bold">Asset_01</span><span className="text-[9px] text-veo-green">+450 CR</span></div><div className="text-[9px] text-gray-500">Viral (1.2M Views)</div></div></div>
                 </div>
             );
         };
 
+        // --- AUTH HOOK (Context Aware) ---
+        const useAuth = () => {
+            const [user, setUser] = useState(null);
+            const [loading, setLoading] = useState(true);
+
+            useEffect(() => {
+                const checkFirebase = setInterval(() => {
+                    if (window.auth && window.fbOnAuth) {
+                        clearInterval(checkFirebase);
+                        window.fbOnAuth(window.auth, (u) => {
+                            if (u) setUser(u); // REAL USER
+                            setLoading(false);
+                        });
+                    }
+                }, 100);
+                return () => clearInterval(checkFirebase);
+            }, []);
+
+            const signIn = async () => {
+                if (!window.auth) return alert("Firebase Bridge Not Ready");
+                try {
+                    await window.fbSignIn(window.auth, window.googleProvider);
+                    // SUCCESS IS HANDLED BY AUTH STATE LISTENER ABOVE
+                } catch (error) {
+                    console.error("Login Failed", error);
+                    alert("Authentication Error: " + error.message);
+                }
+            };
+
+            return { user, loading, signIn };
+        };
+
         // --- MAIN APP ---
         const CineGenesisApp = () => {
-            const [view, setView] = useState('KINETIC'); 
+            const [view, setView] = useState('KINETIC'); 
             const [script, setScript] = useState("");
             const [persona, setPersona] = useState('AUTEUR');
             const [oracle, setOracle] = useState(null);
             const [bootLogs, setBootLogs] = useState([]);
-             
+            
             // STUDIO STATES
             const [showNexus, setShowNexus] = useState(false);
             const [activeLens, setActiveLens] = useState('STD');
             const [xrayActive, setXrayActive] = useState(false);
             const [lightPos, setLightPos] = useState({ x: 50, y: 30 });
             const [showExchange, setShowExchange] = useState(false);
+            const [user, setUser] = useState(null);
 
             // AUTH
-            const { user, signIn } = useAuth();
+            const { user: authUser, signIn } = useAuth();
+            useEffect(() => { if (authUser) setUser(authUser); }, [authUser]);
+
+            // Logic: Context Aware Transition
+            useEffect(() => {
+                if (user && view === 'LOGIN') {
+                    setView('INCUBATION');
+                }
+            }, [user, view]);
 
             // PATCHED BRAIN LOGIC
             useEffect(() => {
@@ -328,7 +325,7 @@
                     else if (lower.includes('do it') || lower.includes('swoosh') || lower.includes('air')) match = 'NIKE';
                     else if (lower.includes('taste') || lower.includes('cola') || lower.includes('red')) match = 'COCA-COLA';
                     else if (lower.includes('mars') || lower.includes('rocket')) match = 'SPACEX';
-                    else if (lower.includes('einstein') || lower.includes('genius')) match = 'NAT_GEO'; 
+                    else if (lower.includes('einstein') || lower.includes('genius')) match = 'NAT_GEO'; 
 
                     const score = Math.min(98, 40 + (script.length/2) + (match !== 'GENERIC' ? 20 : 0));
                     setOracle({ score, value: (score * 1.5).toFixed(0), match });
@@ -349,17 +346,13 @@
             };
 
             const handleLogin = () => {
-                if (window.auth && window.auth.config.apiKey !== "YOUR_API_KEY_HERE") {
-                    signIn().then(() => setView('INCUBATION'));
-                } else {
-                    alert("Firebase Config Missing. Entering Demo Mode.");
-                    setView('INCUBATION');
-                }
+                signIn();
             };
 
-            useEffect(() => {
-                if (user && view === 'LOGIN') setView('INCUBATION');
-            }, [user]);
+            const handleLogout = async () => {
+                if (window.fbSignOut) await window.fbSignOut(window.auth);
+                setUser(null); setView('LOGIN');
+            };
 
             return (
                 <div className="w-full h-screen bg-[#050505] text-[#E5E5E5] font-sans overflow-hidden relative selection:bg-veo-gold selection:text-black flex">
@@ -380,7 +373,7 @@
                                     <div className="text-[10px] font-bold text-white">{user?.displayName || "GUEST_USER"}</div>
                                     <div className="text-[9px] text-[#D4AF37] font-mono">TIER: FREE</div>
                                 </div>
-                                <div className="w-10 h-10 rounded-full bg-gray-800 border border-white/20 flex items-center justify-center text-xs overflow-hidden">
+                                <div className="w-10 h-10 rounded-full bg-gray-800 border border-white/20 flex items-center justify-center text-xs overflow-hidden cursor-pointer" onClick={handleLogout}>
                                     {user?.photoURL ? <img src={user.photoURL} className="w-full h-full" /> : "U"}
                                 </div>
                             </div>
@@ -443,13 +436,14 @@
 
                             <div className="h-32 border-t border-white/5 bg-black/40 p-4 flex flex-col gap-2 relative z-10">
                                 <div className="flex justify-between items-center text-[10px] font-mono text-gray-500"><span>SEQUENCING</span><span>0 CREDITS</span></div>
-                                <div className="flex-1 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-                                    <div className="w-48 h-full rounded bg-white/5 border border-white/10 relative"><div className="absolute top-2 left-2 text-[9px] font-bold text-white uppercase tracking-widest font-bold">Scene 01</div></div>
-                                    <div className="w-48 h-full rounded border border-veo-gold bg-black/20 relative flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => SoundEngine.playClick()}><div className="flex flex-col items-center gap-1"><Icon name="lock" size={14} className="text-[#38bdf8]" /><span className="text-[8px] text-[#38bdf8] font-bold uppercase tracking-widest">Unlock Scene 02</span></div></div>
+                                <div className="flex-1 flex gap-2 overflow-x-auto pb-1">
+                                    <div className="w-48 h-full rounded bg-white/5 border border-white/10 relative"><div className="absolute top-2 left-2 text-[9px] font-bold text-white">SCENE 01</div></div>
+                                    <div className="w-48 h-full rounded border border-veo-gold bg-black/20 relative flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => SoundEngine.playClick()}><div className="flex flex-col items-center gap-1"><Icon name="Lock" size={14} className="text-veo-gold" /><span className="text-[8px] text-veo-gold font-bold">UNLOCK SCENE 02</span></div></div>
                                 </div>
                             </div>
                         </div>
                     )}
+
                     <NexusHUD isOpen={showNexus} onClose={() => setShowNexus(false)} balance={14670} />
                 </div>
             );

@@ -11,7 +11,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- FIREBASE SDK (Modular) -->
+    <!-- FIREBASE SDK (Modular Bridge - Fixed) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -27,21 +27,21 @@
             appId: "1:441370974988:web:a2453282a4344c201e8729"
         };
 
-        // Initialize Firebase (FIXED: Single Initialization)
         try {
+            // INITIALIZE FIREBASE (SINGLE INSTANCE)
             const app = initializeApp(firebaseConfig);
             window.auth = getAuth(app);
             window.db = getFirestore(app);
             window.googleProvider = new GoogleAuthProvider();
             
-            // BRIDGE: Attach modular functions to window so React can see them
-            window.signInWithPopup = signInWithPopup;
-            window.onAuthStateChanged = onAuthStateChanged;
-            window.signOut = signOut;
+            // BRIDGE FUNCTIONS (Exposed to React)
+            window.fbSignIn = signInWithPopup;
+            window.fbSignOut = signOut;
+            window.fbOnAuth = onAuthStateChanged;
             
-            console.log("Firebase Initialized Successfully");
+            console.log("OS: Iron Spine Secure.");
         } catch (e) {
-            console.error("Firebase Config Error:", e);
+            console.error("OS: Spine Connection Error.", e);
         }
     </script>
 
@@ -97,6 +97,8 @@
         .filter-neon { filter: contrast(110%) saturate(150%) hue-rotate(-10deg); }
         .season-banner { background: linear-gradient(90deg, #D4AF37 0%, #FDE047 50%, #D4AF37 100%); background-size: 200% auto; animation: shine 3s linear infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         @keyframes shine { to { background-position: 200% center; } }
+        
+        ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -140,16 +142,16 @@
             return null;
         };
 
-        // --- AUTH HOOK (Real Logic) ---
+        // --- AUTH HOOK ---
         const useAuth = () => {
             const [user, setUser] = useState(null);
             const [loading, setLoading] = useState(true);
 
             useEffect(() => {
                 const checkFirebase = setInterval(() => {
-                    if (window.auth && window.onAuthStateChanged) {
+                    if (window.auth && window.fbOnAuth) {
                         clearInterval(checkFirebase);
-                        window.onAuthStateChanged(window.auth, (u) => {
+                        window.fbOnAuth(window.auth, (u) => {
                             setUser(u);
                             setLoading(false);
                         });
@@ -159,11 +161,15 @@
             }, []);
 
             const signIn = async () => {
-                if (!window.auth) return alert("Firebase Config Missing!");
+                if (!window.auth || !window.fbSignIn) {
+                    alert("Firebase Bridge Missing!");
+                    return;
+                }
                 try {
-                    await window.signInWithPopup(window.auth, window.googleProvider);
+                    await window.fbSignIn(window.auth, window.googleProvider);
                 } catch (error) {
                     console.error("Login Failed", error);
+                    alert("Login Failed: " + error.message);
                 }
             };
 
@@ -208,9 +214,9 @@
 
         // KINETIC SYNC
         const KineticSync = ({ onComplete }) => {
-            const [activeLoop, setActiveLoop] = useState(0);
-            const [isScanning, setIsScanning] = useState(false);
-            const intervalRef = useRef(null);
+            const [syncing, setSyncing] = useState(false);
+            const [mode, setMode] = useState(0);
+            const timer = useRef(null);
             const loops = [{type:'VELOCITY', bg:'linear-gradient(45deg, #ff0000, #000)'}, {type:'DREAM', bg:'radial-gradient(circle, #0000ff, #000)'}, {type:'GLITCH', bg:'repeating-linear-gradient(90deg, #333, #000 10px)'}];
 
             const startScan = () => { 
@@ -227,11 +233,27 @@
                 SoundEngine.playSuccess();
                 setTimeout(onComplete, 500); 
             };
-            useEffect(() => { return () => { if (intervalRef.current) clearInterval(intervalRef.current); }; }, []);
+            
+            const [activeLoop, setActiveLoop] = useState(0); 
+            const [isScanning, setIsScanning] = useState(false);
+
+            const start = () => {
+                 SoundEngine.init();
+                 setIsScanning(true);
+                 if (timer.current) clearInterval(timer.current);
+                 timer.current = setInterval(() => { setActiveLoop(p => (p + 1) % loops.length); SoundEngine.playStrobe(); }, 150);
+            };
+            const stop = () => {
+                if (!isScanning) return;
+                setIsScanning(false);
+                clearInterval(timer.current);
+                SoundEngine.playSuccess();
+                setTimeout(onComplete, 500);
+            };
 
             return (
-                <div className="w-full flex-1 flex flex-col items-center justify-center h-full relative overflow-hidden bg-black select-none" onMouseDown={startScan} onMouseUp={stopScan} onMouseLeave={stopScan} onTouchStart={startScan} onTouchEnd={stopScan}>
-                    <div className="absolute inset-0 z-0">{loops.map((l, i) => (<div key={i} className={`kinetic-loop ${i === activeLoop ? 'kinetic-active' : ''}`} style={{ background: l.bg }}></div>))}</div>
+                <div className="w-full flex-1 flex flex-col items-center justify-center h-full relative overflow-hidden bg-black select-none" onMouseDown={start} onMouseUp={stop} onMouseLeave={stop} onTouchStart={start} onTouchEnd={stop}>
+                    <div className="absolute inset-0 z-0">{loops.map((l, i) => (<div key={i} className={`kinetic-loop ${i === activeLoop && isScanning ? 'kinetic-active' : ''}`} style={{ background: l.bg }}></div>))}</div>
                     <div className="relative z-10 text-center space-y-8">
                         <h2 className="text-3xl font-bold text-white tracking-widest uppercase mix-blend-difference">{isScanning ? 'SYNCING RHYTHM...' : 'HOLD TO CALIBRATE'}</h2>
                         <div className="text-[80px] md:text-[120px] font-black text-transparent bg-clip-text bg-white opacity-20 select-none">{loops[activeLoop].type}</div>
@@ -247,10 +269,10 @@
             return (
                 <div className="w-full flex-1 flex flex-col items-center justify-center h-full bg-black animate-fade-in relative overflow-hidden">
                     <div className="absolute inset-0 opacity-20" style={{ background: `radial-gradient(circle at 50% 50%, #D4AF37, transparent 70%)` }}></div>
-                    <div className="relative z-10 w-96 bg-[#0f111a]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl text-center space-y-6">
+                    <div className="relative z-10 w-96 glass-panel p-10 rounded-2xl text-center space-y-6">
                         <div className="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center border border-[#D4AF37]"><Icon name="Lock" size={24} className="text-[#D4AF37]" /></div>
                         <div><h2 className="text-2xl font-serif text-white tracking-widest">NEURAL LINK</h2><p className="text-[10px] text-gray-500 font-mono mt-2">ESTABLISH IDENTITY TO ACCESS OS</p></div>
-                        <button onClick={onLogin} className="w-full py-3 bg-white hover:bg-gray-200 text-black font-bold text-xs rounded-lg tracking-widest transition-all flex items-center justify-center gap-2">{loading ? "CONNECTING..." : <><Icon name="LogIn" size={14} /> CONNECT IDENTITY</>}</button>
+                        <button onClick={signIn} className="w-full py-3 bg-white hover:bg-gray-200 text-black font-bold text-xs rounded-lg tracking-widest transition-all flex items-center justify-center gap-2">{loading ? "CONNECTING..." : <><Icon name="LogIn" size={14} /> CONNECT IDENTITY</>}</button>
                         <div className="text-[9px] text-gray-600">SECURE ENCRYPTED CONNECTION</div>
                     </div>
                 </div>
@@ -274,7 +296,7 @@
                     <div className="h-14 border-b border-white/10 flex items-center justify-between px-4 bg-black/40"><div className="flex items-center gap-2"><Icon name="Activity" size={14} className="text-veo-gold" /><span className="text-xs font-bold text-white tracking-widest">NEXUS</span></div><button onClick={() => { SoundEngine.playClick(); onClose(); }} className="text-gray-500 hover:text-white">✕</button></div>
                     <div className="p-3 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-b border-white/5 flex justify-between items-center"><span className="text-[10px] font-bold text-purple-400">SEASON ENDS</span><span className="text-[10px] font-mono text-white">12D : 04H</span></div>
                     <div className="p-4 bg-white/5 border-b border-white/5"><div className="flex justify-between items-center mb-3"><span className="text-[10px] text-gray-400">NET WORTH</span><span className="text-sm font-bold text-white font-mono">{balance.toLocaleString()} FLUX</span></div><button className="w-full py-2 rounded flex items-center justify-center gap-2 text-[10px] font-bold bg-veo-green/20 text-veo-green border border-veo-green/30"><Icon name="Server" size={12} className="animate-pulse" /> HIVE MINING: ACTIVE</button></div>
-                    <div className="p-4 space-y-4"><div className="bg-[#0f111a] border border-veo-gold/20 rounded-lg p-3"><h4 className="text-[10px] font-bold text-white mb-2 flex gap-2"><Icon name="Cpu" size={12} /> COMPUTE SWAP</h4><button className="w-full py-1.5 bg-veo-gold text-black text-[9px] font-bold rounded">TRADE EQUITY</button></div><div className="bg-white/5 border border-white/5 rounded-lg p-3"><div className="flex justify-between mb-1"><span className="text-[10px] text-gray-300 font-bold">Asset_01</span><span className="text-[9px] text-veo-green">+450 CR</span></div><div className="text-[9px] text-gray-500">Viral (1.2M Views)</div></div></div>
+                    <div className="p-4 space-y-4"><div className="bg-[#0f111a] border border-veo-gold/20 rounded-lg p-3"><h4 className="text-[10px] font-bold text-white mb-2 flex gap-2"><Icon name="Cpu" size={12} /> COMPUTE SWAP</h4><button className="w-full py-1.5 bg-veo-gold text-black text-[9px] font-bold rounded">TRADE EQUITY</button></div><div className="bg-white/5 border border-white/5 rounded-lg p-3"><div className="flex justify-between mb-1"><span className="text-[10px] text-gray-300 font-bold">Asset_01</span><span className="text-[9px] text-green-400">+450 CR</span></div><div className="text-[9px] text-gray-500">Viral (1.2M Views)</div></div></div>
                 </div>
             );
         };
@@ -327,7 +349,7 @@
             };
 
             const handleLogin = () => {
-                if (window.auth) {
+                if (window.auth && window.auth.config.apiKey !== "YOUR_API_KEY_HERE") {
                     signIn().then(() => setView('INCUBATION'));
                 } else {
                     alert("Firebase Config Missing. Entering Demo Mode.");
@@ -346,7 +368,7 @@
                     {/* PHASE 0: KINETIC SYNC */}
                     {view === 'KINETIC' && <KineticSync onComplete={() => setView('LOGIN')} />}
 
-                    {/* PHASE 0.5: LOGIN WALL */}
+                    {/* PHASE 0.5: LOGIN WALL (The Iron Spine) */}
                     {view === 'LOGIN' && <LoginWall onLogin={handleLogin} />}
 
                     {/* PHASE 1: INCUBATION */}
@@ -358,7 +380,7 @@
                                     <div className="text-[10px] font-bold text-white">{user?.displayName || "GUEST_USER"}</div>
                                     <div className="text-[9px] text-[#D4AF37] font-mono">TIER: FREE</div>
                                 </div>
-                                <div className="w-8 h-8 rounded-full bg-gray-800 border border-white/20 flex items-center justify-center text-xs overflow-hidden">
+                                <div className="w-10 h-10 rounded-full bg-gray-800 border border-white/20 flex items-center justify-center text-xs overflow-hidden">
                                     {user?.photoURL ? <img src={user.photoURL} className="w-full h-full" /> : "U"}
                                 </div>
                             </div>
@@ -421,14 +443,13 @@
 
                             <div className="h-32 border-t border-white/5 bg-black/40 p-4 flex flex-col gap-2 relative z-10">
                                 <div className="flex justify-between items-center text-[10px] font-mono text-gray-500"><span>SEQUENCING</span><span>0 CREDITS</span></div>
-                                <div className="flex-1 flex gap-2 overflow-x-auto pb-1">
-                                    <div className="w-48 h-full rounded bg-white/5 border border-white/10 relative"><div className="absolute top-2 left-2 text-[9px] font-bold text-white">SCENE 01</div></div>
-                                    <div className="w-48 h-full rounded border border-veo-gold bg-black/20 relative flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => SoundEngine.playClick()}><div className="flex flex-col items-center gap-1"><Icon name="Lock" size={14} className="text-veo-gold" /><span className="text-[8px] text-veo-gold font-bold">UNLOCK SCENE 02</span></div></div>
+                                <div className="flex-1 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                                    <div className="w-48 h-full rounded bg-white/5 border border-white/10 relative"><div className="absolute top-2 left-2 text-[9px] font-bold text-white uppercase tracking-widest font-bold">Scene 01</div></div>
+                                    <div className="w-48 h-full rounded border border-veo-gold bg-black/20 relative flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => SoundEngine.playClick()}><div className="flex flex-col items-center gap-1"><Icon name="lock" size={14} className="text-[#38bdf8]" /><span className="text-[8px] text-[#38bdf8] font-bold uppercase tracking-widest">Unlock Scene 02</span></div></div>
                                 </div>
                             </div>
                         </div>
                     )}
-
                     <NexusHUD isOpen={showNexus} onClose={() => setShowNexus(false)} balance={14670} />
                 </div>
             );
@@ -439,4 +460,3 @@
     </script>
 </body>
 </html>
-

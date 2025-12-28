@@ -3,61 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CineGenesis: The Forced Entry</title>
+    <title>CineGenesis: The True First Priority</title>
     
     <!-- PWA MANIFEST -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNpbmVHZW5lc2lzIE9TIiwKICAic2hvcnRfbmFtZSI6ICJDaW5lR2VuZXNpcyIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDAwMDAwIiwKICAidGhlbWVfY29sb3IiOiAiIzAwMDAwMCJ9">
-    
+
     <!-- CORE LIBRARIES -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- FIREBASE SDK (Modular Bridge) -->
+    <!-- FIREBASE SDK (Exact Clean Slate Bridge) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
-        // ===============================================================
-        //  ⚠️ PASTE YOUR REAL FIREBASE KEYS BELOW ⚠️
-        // ===============================================================
+        // --- YOUR KEYS PRE-FILLED ---
         const firebaseConfig = {
             apiKey: "PASTE_YOUR_API_KEY_HERE",
             authDomain: "cinegenesis-os.firebaseapp.com",
             projectId: "cinegenesis-os",
             storageBucket: "cinegenesis-os.firebasestorage.app",
             messagingSenderId: "SENDER_ID",
-            appId: "APP_ID"
+            appId: "1:441370974988:web:a2453282a4344c201e8729"
         };
-        // ===============================================================
 
         try {
+            // INITIALIZE FIREBASE (SINGLE INSTANCE)
             const app = initializeApp(firebaseConfig);
             window.auth = getAuth(app);
             window.db = getFirestore(app);
             window.googleProvider = new GoogleAuthProvider();
             
-            // Bridge
-            window.fbSignIn = signInWithPopup;
-            window.fbSignOut = signOut;
-            window.fbOnAuth = onAuthStateChanged;
+            // BRIDGE FUNCTIONS (MATCHING INDEX2.HTML)
+            window.signInWithPopup = signInWithPopup;
+            window.onAuthStateChanged = onAuthStateChanged;
+            window.signOut = signOut;
             
-            console.log("OS: Iron Spine Secure.");
+            console.log("OS: Iron Spine Context Active.");
         } catch (e) {
-            console.error("OS: Spine Connection Error.", e);
+            console.error("OS: Connection Failure.", e);
         }
     </script>
 
     <!-- FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* CORE RESET - PURE BLACK START */
+        /* CORE RESET - PURE BLACK */
         body { 
             background-color: #000000; 
             color: #E0E7FF; 
@@ -68,7 +66,7 @@
             -webkit-font-smoothing: antialiased;
         }
         
-        /* THE ATMOSPHERE (ROYAL BLUE) - HIDDEN AT START */
+        /* ATMOSPHERE (ROYAL BLUE - PHASE 2+) */
         .atmosphere {
             position: fixed; inset: 0; pointer-events: none;
             background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #050510 80%);
@@ -80,7 +78,7 @@
         .glass-hud { background: rgba(8, 8, 18, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255, 255, 255, 0.1); }
         .glass-panel { background: rgba(15, 15, 35, 0.4); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 60px -10px rgba(0,0,0,0.8); }
 
-        /* KINETIC VIEWPORT */
+        /* KINETIC */
         .kinetic-viewport {
             background-color: #000;
             position: relative;
@@ -90,14 +88,14 @@
         .kinetic-active { opacity: 1; animation: flash 0.15s infinite; }
         @keyframes flash { 0% { filter: brightness(1); } 50% { filter: brightness(1.6); } 100% { filter: brightness(1); } }
 
-        /* BIOLOGICAL PULSE */
-        .bio-pulse { animation: heartbeat 3s infinite ease-in-out; }
-        @keyframes heartbeat { 
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); } 
-            50% { transform: scale(1.05); box-shadow: 0 0 30px 5px rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.8); } 
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); } 
+        /* TYPOGRAPHY - HUGE MAPPING */
+        .huge-mapping { font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; }
+        .season-banner {
+            background: linear-gradient(90deg, #D4AF37 0%, #FDE047 50%, #D4AF37 100%);
+            background-size: 200% auto; animation: shine 3s linear infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
+        @keyframes shine { to { background-position: 200% center; } }
+        
         /* ORACLE SCANNER */
         .oracle-scanner {
             background: linear-gradient(180deg, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.3) 50%, rgba(56, 189, 248, 0) 100%);
@@ -116,13 +114,24 @@
         .genesis-content { animation: scrollUp 60s linear infinite; }
         @keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
 
-        /* TYPOGRAPHY */
-        .season-banner {
-            background: linear-gradient(90deg, #D4AF37 0%, #FDE047 50%, #D4AF37 100%);
-            background-size: 200% auto; animation: shine 3s linear infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        /* SYNC BUTTON - HIGH LIGHTING */
+        .sync-highlight { box-shadow: 0 0 50px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.1); }
+        .sync-active {
+            box-shadow: 0 0 150px rgba(255, 255, 255, 0.6), inset 0 0 50px rgba(255, 255, 255, 0.4);
+            border-color: #FFF !important;
+            transform: scale(1.1);
         }
-        @keyframes shine { to { background-position: 200% center; } }
-        
+
+        /* BIO PULSE */
+        .bio-pulse { animation: heartbeat 3s infinite ease-in-out; }
+        @keyframes heartbeat { 
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); } 
+            50% { transform: scale(1.05); box-shadow: 0 0 30px 5px rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.8); } 
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); } 
+        }
+
+        /* ICONS & THEME */
+        .text-azure { color: #38bdf8; }
         .btn-primary { 
             background: linear-gradient(135deg, #e0e7ff 0%, #cbd5e1 100%); 
             color: #0f172a; 
@@ -153,7 +162,7 @@
 
         // --- ICONS (FIXED) ---
         const Icon = ({ name, size = 16, className = "" }) => {
-            const s = size; const c = `stroke-current ${className}`; const p = { strokeWidth: 2, fill: "none", strokeLinecap: "round", strokeLinejoin: "round" };
+            const s = size; const c = `stroke-current ${className}`; const p = { strokeWidth: 3, fill: "none", strokeLinecap: "round", strokeLinejoin: "round" };
             if (name === 'lock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
             if (name === 'zap') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>;
             if (name === 'cpu') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>;
@@ -197,14 +206,19 @@
             }
         };
 
-        // --- GENESIS STREAM DATA ---
+        // --- GENESIS STREAM DATA (HISTORY) ---
         const GENESIS_LOGS = [
-            { ver: "v41.0", date: "NOW", event: "Forced Entry Protocol. Gate Unlocked." },
+            { ver: "v43.0", date: "NOW", event: "True First Priority. Huge Mapping Restored." },
+            { ver: "v42.0", date: "YESTERDAY", event: "Authentic Restoration. Context Secured." },
+            { ver: "v38.0", date: "YESTERDAY", event: "Visual Sovereign. Huge Mapping Restored." },
             { ver: "v34.0", date: "YESTERDAY", event: "Unshackled Sovereign. Real-Mode Enforced." },
             { ver: "v24.0", date: "DEC 25", event: "Complete Vision. Soul Algorithm Active." },
             { ver: "v21.0", date: "DEC 24", event: "Neural Sync Calibration Deployed." },
             { ver: "v18.0", date: "DEC 22", event: "Iron Spine Identity Protocol Secured." },
             { ver: "v16.0", date: "DEC 20", event: "Holo-Deck & X-Ray Vision Integrated." },
+            { ver: "v14.0", date: "DEC 18", event: "Fractal Zoom Technology Online." },
+            { ver: "v10.0", date: "DEC 12", event: "Nexus Economy & Genealogy Tree Established." },
+            { ver: "v08.0", date: "DEC 08", event: "HyperLoop Financial Core." },
             { ver: "v01.0", date: "NOV 01", event: "Project CineGenesis Initiated." }
         ];
 
@@ -228,11 +242,12 @@
             </div>
         );
 
-        // 2. KINETIC SYNC
+        // 2. KINETIC SYNC (SHARP BLACK START - HUGE MAPPING)
         const KineticSync = ({ onComplete }) => {
             const [syncing, setSyncing] = useState(false);
             const [mode, setMode] = useState(0);
             const timer = useRef(null);
+            // ONLY BLUE/CYAN/GOLD LOOPS
             const loops = ['radial-gradient(circle, #3B82F6 0%, transparent 70%)', 'radial-gradient(circle, #06b6d4 0%, transparent 70%)', 'radial-gradient(circle, #D4AF37 0%, transparent 70%)'];
 
             const start = () => { SoundEngine.init(); setSyncing(true); timer.current = setInterval(() => { setMode(m => (m + 1) % 3); SoundEngine.playStrobe(); }, 150); };
@@ -244,37 +259,45 @@
                     {loops.map((bg, i) => (
                         <div key={i} className={`kinetic-loop ${syncing && mode === i ? 'kinetic-active' : ''}`} style={{ background: bg }}></div>
                     ))}
-                    <div className="z-10 text-center animate-pulse">
-                        <h2 className="text-[10px] font-mono tracking-[0.5em] text-white/40 mb-4 uppercase font-bold">Neural Calibration</h2>
-                        <div className="text-4xl font-serif italic text-white mb-12 season-banner">Hold to Sync</div>
-                        <div className={`w-24 h-24 rounded-full border-4 border-white/20 mx-auto flex items-center justify-center transition-all duration-300 ${syncing ? 'bg-white scale-110 shadow-[0_0_100px_white]' : 'bg-transparent'}`}>
-                            <Icon name="fastforward" size={40} className={syncing ? 'text-black' : 'text-white'} />
+                    <div className="z-10 text-center flex flex-col items-center">
+                        <h2 className="text-xl md:text-3xl font-mono tracking-[1em] text-white/30 mb-12 uppercase font-black">Neural Calibration</h2>
+                        <div className="relative mb-24">
+                            {/* HUGE MAPPING TYPOGRAPHY */}
+                            <div className="text-8xl md:text-[16rem] huge-mapping italic text-white season-banner">Hold to Sync</div>
+                            <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
+                                <div className="text-[20rem] font-black text-white/50 tracking-tighter">VELOCITY</div>
+                            </div>
+                        </div>
+                        {/* GIANT SYNC BUTTON */}
+                        <div className={`w-40 h-40 md:w-56 md:h-56 rounded-full border-[12px] border-white/10 flex items-center justify-center transition-all duration-300 sync-highlight ${syncing ? 'bg-white sync-active shadow-[0_0_100px_white]' : 'bg-transparent'}`}>
+                            <Icon name="fastforward" size={80} className={syncing ? 'text-black' : 'text-white'} />
                         </div>
                     </div>
                 </div>
             );
         };
 
-        // 3. LOGIN WALL (MODIFIED TO FORCE ENTRY)
+        // 3. LOGIN WALL
         const LoginWall = ({ onLogin }) => {
-            const { signIn, loading } = useAuth(onLogin); // Pass onLogin callback
+            const { signIn, loading } = useAuth();
             return (
-                <div className="h-screen w-full flex items-center justify-center relative overflow-hidden">
+                <div className="h-screen w-full flex items-center justify-center relative overflow-hidden bg-black/95">
                     <GenesisStream />
-                    <div className="atmosphere atmosphere-active"></div>
-                    <div className="relative z-10 w-96 glass-panel p-10 rounded-2xl text-center space-y-8 shadow-[0_0_100px_rgba(56,189,248,0.1)] animate-in fade-in zoom-in duration-700">
-                        <div className="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center border-2 border-[#D4AF37] bio-pulse shadow-[0_0_20px_rgba(212,175,55,0.2)]">
-                            <Icon name="lock" size={28} className="text-[#D4AF37]" />
+                    {/* NO FOG LAYER HERE - SHARP CONTRAST */}
+                    <div className="relative z-10 w-full max-w-lg glass-panel p-20 rounded-[3rem] text-center space-y-12 shadow-[0_0_100px_rgba(56,189,248,0.1)] animate-in fade-in zoom-in duration-700">
+                        {/* RESTORED GOLD CIRCULAR LOCK ICON */}
+                        <div className="w-24 h-24 mx-auto bg-white/5 rounded-full flex items-center justify-center border-[4px] border-[#D4AF37] bio-pulse shadow-[0_0_40px_rgba(212,175,55,0.3)]">
+                            <Icon name="lock" size={48} className="text-[#D4AF37]" />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-serif text-white tracking-widest uppercase">Neural Link</h2>
-                            <p className="text-[10px] text-white/30 font-mono uppercase mt-2 tracking-[0.2em]">CineGenesis Identity Protocol</p>
+                            <h2 className="text-5xl font-serif font-black text-white tracking-widest uppercase mb-4">Neural Link</h2>
+                            <p className="text-sm text-white/30 font-mono uppercase tracking-[0.5em]">Identity Protocol</p>
                         </div>
-                        <button onClick={signIn} disabled={loading} className="w-full py-4 btn-primary text-[10px] font-bold tracking-[0.3em] rounded-xl uppercase flex items-center justify-center gap-2">
-                            {loading ? "INITIALIZING LINK..." : <><Icon name="login" size={14} /> CONNECT IDENTITY</>}
+                        <button onClick={onLogin} disabled={loading} className="w-full py-6 bg-white text-black font-black text-lg tracking-[0.4em] rounded-2xl uppercase hover:scale-105 transition-all shadow-2xl">
+                            {loading ? "INITIALIZING LINK..." : "CONNECT IDENTITY"}
                         </button>
-                        <div className="pt-4 border-t border-white/5">
-                            <p className="text-[8px] font-mono text-white/20 uppercase tracking-widest leading-loose">Secured by The Iron Spine Architecture</p>
+                        <div className="pt-6 border-t border-white/5 opacity-20">
+                            <p className="text-[10px] font-mono uppercase tracking-[0.4em]">Iron Spine Secure</p>
                         </div>
                     </div>
                 </div>
@@ -296,7 +319,7 @@
                     <span className="text-[9px] text-gray-400 flex items-center gap-1"><Icon name="heart" size={10} className="text-purple-400" /> SOUL:</span>
                     <span className="text-[9px] font-mono text-purple-300 font-bold tracking-tighter">{soul}</span>
                 </div>
-                <div className="bg-[#38bdf8]/10 border border-[#38bdf8]/20 p-2 rounded flex items-center gap-2"><Icon name="briefcase" size={12} className="text-[#38bdf8]" /><div><div className="text-[9px] font-bold text-gray-200 uppercase">Match: {match}</div></div></div>
+                <div className="bg-[#38bdf8]/10 border border-[#38bdf8]/20 p-2 rounded flex items-center gap-2"><Icon name="briefcase" size={12} className="text-[#38bdf8]" /><div><div className="text-[9px] font-bold text-gray-200 uppercase tracking-widest">Match: {match}</div></div></div>
             </div>
         );
 
@@ -313,8 +336,8 @@
             );
         };
 
-        // --- AUTH HOOK (FORCED ENTRY MODIFIED) ---
-        const useAuth = (onSuccess) => {
+        // --- AUTH HOOK (Context Aware) ---
+        const useAuth = () => {
             const [user, setUser] = useState(null);
             const [loading, setLoading] = useState(false);
 
@@ -325,7 +348,6 @@
                         window.onAuthStateChanged(window.auth, (u) => {
                             if (u) {
                                 setUser(u);
-                                if (onSuccess) onSuccess(); // FORCE NAVIGATE
                             }
                         });
                     }
@@ -385,6 +407,14 @@
                 return () => clearInterval(interval);
             }, [calibrationComplete]);
 
+            // Logic: Context Aware Transition
+            useEffect(() => {
+                if (calibrationComplete) {
+                    if (user) setView('INCUBATION');
+                    else setView('LOGIN');
+                }
+            }, [user, calibrationComplete]);
+
             // PATCHED BRAIN LOGIC
             useEffect(() => {
                 if (script.length > 10 && !oracle) {
@@ -415,10 +445,6 @@
                 }, 600);
             };
 
-            const handleLoginSuccess = () => {
-                setView('INCUBATION');
-            };
-
             const handleLogout = async () => {
                 if (window.fbSignOut) await window.fbSignOut(window.auth);
                 setUser(null); setView('LOGIN');
@@ -428,15 +454,13 @@
                 <div className="w-full h-screen bg-[#000000] text-[#E5E5E5] font-sans overflow-hidden relative selection:bg-veo-gold selection:text-black flex">
                     
                     {/* GLOBAL AMBIENT LAYER (STUDIO ONLY) */}
-                    {view !== 'KINETIC' && view !== 'LOGIN' && (
-                        <div className="absolute inset-0 transition-colors duration-[3000ms] pointer-events-none opacity-20" style={{ background: `radial-gradient(circle at 50% 30%, #3B82F6, transparent 70%)` }}></div>
-                    )}
+                    <div className={`atmosphere ${view !== 'KINETIC' ? 'atmosphere-active' : ''}`}></div>
 
                     {/* PHASE 0: KINETIC SYNC */}
                     {view === 'KINETIC' && <KineticSync onComplete={() => { setCalibrationComplete(true); setView('LOGIN'); }} />}
 
                     {/* PHASE 0.5: LOGIN WALL (The Iron Spine) */}
-                    {view === 'LOGIN' && <LoginWall onLogin={handleLoginSuccess} />}
+                    {view === 'LOGIN' && <LoginWall onLogin={signIn} />}
 
                     {/* PHASE 1: INCUBATION */}
                     {view === 'INCUBATION' && (
@@ -450,24 +474,26 @@
                                     {user?.photoURL ? <img src={user.photoURL} className="w-full h-full" /> : "U"}
                                 </div>
                             </div>
+
                             <div className="relative z-10 w-full max-w-2xl group">
                                 {oracle && <OracleHUD {...oracle} />}
                                 <h1 className="text-5xl md:text-7xl font-serif text-center mb-2 tracking-tighter">Direct Your <span className="italic season-banner">Dreams.</span></h1>
+                                <p className="text-center text-[10px] font-mono text-veo-gold uppercase tracking-[0.4em] mb-8">Season 1: Neon Genesis</p>
                                 <div className="flex justify-center gap-4 mb-6">
-                                    {['AUTEUR', 'TITAN'].map(p => (<button key={p} onClick={() => { setPersona(p); SoundEngine.playClick(); }} className={`text-[10px] font-bold px-3 py-1 rounded border ${persona === p ? 'bg-[#38bdf8]/20 border-[#38bdf8] text-[#38bdf8]' : 'border-white/10 text-gray-500'}`}>{p}</button>))}
+                                    {['AUTEUR', 'TITAN'].map(p => (<button key={p} onClick={() => { setPersona(p); SoundEngine.playClick(); }} className={`text-[10px] font-bold px-3 py-1 rounded border ${persona === p ? 'bg-veo-gold/20 border-veo-gold text-veo-gold' : 'border-white/10 text-gray-500'}`}>{p}</button>))}
                                 </div>
                                 <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
                                     <textarea value={script} onChange={(e) => setScript(e.target.value)} placeholder="Describe your vision..." className="w-full h-48 bg-transparent p-8 text-xl font-serif text-white placeholder-gray-700 resize-none focus:outline-none" autoFocus spellCheck="false" />
                                     <div className="oracle-scanner pointer-events-none"></div>
                                 </div>
-                                <div className="mt-8 flex justify-center"><button onClick={handleIgnite} disabled={script.length < 5} className={`btn-ignite text-black px-12 py-5 rounded-full font-bold text-xs tracking-[0.2em] flex items-center gap-3 ${script.length < 5 ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}><Icon name="sparkles" size={16} /> IGNITE</button></div>
+                                <div className="mt-8 flex justify-center"><button onClick={handleIgnite} disabled={script.length < 5} className={`btn-ignite text-black px-12 py-5 rounded-full font-bold text-xs tracking-[0.2em] flex items-center gap-3 ${script.length < 5 ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}><Icon name="Sparkles" size={16} /> IGNITE</button></div>
                             </div>
                         </div>
                     )}
 
                     {view === 'IGNITION' && (
                         <div className="w-full flex-1 absolute inset-0 bg-black z-50 flex flex-col items-center justify-center font-mono">
-                            <div className="w-80 space-y-2 h-32 overflow-hidden border-l border-white/10 pl-4">{bootLogs.map((log, i) => (<div key={i} className="text-[10px] text-[#38bdf8] animate-slide-up">> {log}</div>))}</div>
+                            <div className="w-80 space-y-2 h-32 overflow-hidden border-l border-white/10 pl-4">{bootLogs.map((log, i) => (<div key={i} className="text-[10px] text-veo-gold animate-slide-up">> {log}</div>))}</div>
                         </div>
                     )}
 
@@ -488,11 +514,40 @@
                                     <div className="text-[10px] font-mono text-gray-500">GENESIS_01 // {persona}</div>
                                     <div className="h-4 w-[1px] bg-white/10"></div>
                                     <div className="flex gap-2">
-                                        {['STD', 'NOIR', 'NEON'].map(l => (<button key={l} onClick={() => { setActiveLens(l); SoundEngine.playClick(); }} className={`px-2 py-1 rounded border text-[9px] font-bold ${activeLens === l ? 'lens-active' : 'border-white/10 text-gray-500'}`}>{l}</button>))}
+                                        {['STD', 'NOIR', 'NEON'].map(l => (<button key={l} onClick={() => { setActiveLens(l); SoundEngine.playClick(); }} className={`px-4 py-1 rounded border text-[10px] font-black ${activeLens === l ? 'lens-active' : 'border-white/10 text-gray-500'}`}>{l}</button>))}
                                     </div>
-                                    <button onClick={() => { setXrayActive(!xrayActive); SoundEngine.playXray(); }} className={`flex items-center gap-2 px-3 py-1 rounded text-[9px] font-bold border transition-all ${xrayActive ? 'bg-veo-green/20 border-veo-green text-veo-green animate-pulse' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'}`}><Icon name="Grid" size={10} /> X-RAY</button>
+                                    <button onClick={() => { setXrayActive(!xrayActive); SoundEngine.playXray(); }} className={`flex items-center gap-2 px-6 py-2 rounded-full text-xs font-black border transition-all ${xrayActive ? 'bg-veo-green/20 border-veo-green text-veo-green animate-pulse' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'}`}><Icon name="Grid" size={12} /> X-RAY</button>
                                 </div>
                                 <button onClick={() => setShowNexus(!showNexus)} className="bg-veo-gold/10 text-veo-gold px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-2 border border-veo-gold/30"><Icon name="Activity" size={12} /> NEXUS HUD</button>
                             </div>
 
-                            <div className="flex-1 flex items-center justify-center bg-black relative overflow-hidden cursor-crosshair" onMouseMove={(e) => { if (e.buttons === 1) { const rect = e.currentTarget.getBoundingClientRect(); setLightPos({ x: (e.clientX - rect.
+                            <div className="flex-1 flex items-center justify-center bg-black relative overflow-hidden cursor-crosshair" onMouseMove={(e) => { if (e.buttons === 1) { const rect = e.currentTarget.getBoundingClientRect(); setLightPos({ x: (e.clientX - rect.left)/rect.width*100, y: (e.clientY - rect.top)/rect.height*100 }); } }}>
+                                <div className={`absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none ${xrayActive ? 'xray-visible' : 'opacity-0'}`}><div className="w-[200%] h-[200%] xray-grid"></div></div>
+                                <div className={`relative w-full max-w-4xl aspect-video bg-gray-900 rounded-lg border border-veo-gold/20 shadow-2xl overflow-hidden group z-10 transition-all duration-500 ${activeLens === 'NOIR' ? 'filter-noir' : activeLens === 'NEON' ? 'filter-neon' : ''} ${xrayActive ? 'xray-active' : ''}`}>
+                                    <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1200")' }}></div>
+                                    <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ background: `radial-gradient(circle at ${lightPos.x}% ${lightPos.y}%, rgba(255,255,255,0.4) 0%, transparent 60%)` }}></div>
+                                    {!xrayActive && <div className="light-orb" style={{ left: `${lightPos.x}%`, top: `${lightPos.y}%` }}></div>}
+                                    <div className="absolute bottom-4 right-4 text-white/30 font-black text-2xl font-sans tracking-tighter select-none pointer-events-none mix-blend-overlay">CINEGENESIS</div>
+                                </div>
+                            </div>
+
+                            <div className="h-32 border-t border-white/5 bg-black/40 p-4 flex flex-col gap-2 relative z-10">
+                                <div className="flex justify-between items-center text-[10px] font-mono text-gray-500"><span>SEQUENCING</span><span>0 CREDITS</span></div>
+                                <div className="flex-1 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+                                    <div className="w-48 h-full rounded bg-white/5 border border-white/10 relative"><div className="absolute top-2 left-2 text-[9px] font-bold text-white uppercase tracking-widest font-bold">Scene 01</div></div>
+                                    <div className="w-48 h-full rounded border border-veo-gold bg-black/20 relative flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => SoundEngine.playClick()}><div className="flex flex-col items-center gap-1"><Icon name="Lock" size={14} className="text-veo-gold" /><span className="text-[8px] text-veo-gold font-bold">UNLOCK SCENE 02</span></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <NexusHUD isOpen={showNexus} onClose={() => setShowNexus(false)} balance={14670} />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<CineGenesisApp />);
+    </script>
+</body>
+</html>

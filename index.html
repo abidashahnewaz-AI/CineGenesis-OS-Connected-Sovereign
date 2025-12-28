@@ -3,155 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CineGenesis: The True First Priority</title>
+    <title>CineGenesis: Clean Slate</title>
     
-    <!-- PWA MANIFEST -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkNpbmVHZW5lc2lzIE9TIiwKICAic2hvcnRfbmFtZSI6ICJDaW5lR2VuZXNpcyIsCiAgInN0YXJ0X3VybCI6ICIvIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDAwMDAwIiwKICAidGhlbWVfY29sb3IiOiAiIzAwMDAwMCJ9">
-
     <!-- CORE LIBRARIES -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- FIREBASE SDK (Exact Clean Slate Bridge) -->
+    <!-- FIREBASE SDK (Modular) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         
-        // --- YOUR KEYS PRE-FILLED ---
+        // --- YOUR REAL KEYS (PRE-FILLED) ---
         const firebaseConfig = {
-            apiKey: "PASTE_YOUR_API_KEY_HERE",
+            apiKey: "AIzaSyAhbTjjNsL32-_ElgZR1V0XuMWtRrlnNVM",
             authDomain: "cinegenesis-os.firebaseapp.com",
             projectId: "cinegenesis-os",
             storageBucket: "cinegenesis-os.firebasestorage.app",
-            messagingSenderId: "SENDER_ID",
+            messagingSenderId: "441370974988",
             appId: "1:441370974988:web:a2453282a4344c201e8729"
         };
 
+        // Initialize Firebase (FIXED: Single Initialization)
         try {
-            // INITIALIZE FIREBASE (SINGLE INSTANCE)
             const app = initializeApp(firebaseConfig);
             window.auth = getAuth(app);
             window.db = getFirestore(app);
             window.googleProvider = new GoogleAuthProvider();
             
-            // BRIDGE FUNCTIONS (MATCHING INDEX2.HTML)
+            // BRIDGE: Attach modular functions to window so React can see them
             window.signInWithPopup = signInWithPopup;
             window.onAuthStateChanged = onAuthStateChanged;
             window.signOut = signOut;
             
-            console.log("OS: Iron Spine Context Active.");
+            console.log("Firebase Initialized Successfully");
         } catch (e) {
-            console.error("OS: Connection Failure.", e);
+            console.error("Firebase Config Error:", e);
         }
     </script>
 
     <!-- FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- CONFIG -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: { 
+                        void: '#050505', 
+                        veo: { gold: '#D4AF37', accent: '#3B82F6', alert: '#EF4444', purple: '#8B5CF6', green: '#10B981' } 
+                    },
+                    animation: { 
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'scan': 'scan 4s linear infinite',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                        'slide-left': 'slideLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+                    },
+                    keyframes: {
+                        scan: { '0%': { backgroundPosition: '0% 0%' }, '100%': { backgroundPosition: '0% 100%' } },
+                        fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+                        slideLeft: { '0%': { transform: 'translateX(100%)' }, '100%': { transform: 'translateX(0)' } }
+                    }
+                }
+            }
+        }
+    </script>
     
     <style>
-        /* CORE RESET - PURE BLACK */
-        body { 
-            background-color: #000000; 
-            color: #E0E7FF; 
-            height: 100vh; 
-            overflow: hidden; 
-            margin: 0; 
-            font-family: 'Inter', sans-serif; 
-            -webkit-font-smoothing: antialiased;
-        }
+        body { background-color: #050505; color: #E5E5E5; height: 100vh; overflow: hidden; margin: 0; -webkit-font-smoothing: antialiased; }
         
-        /* ATMOSPHERE (ROYAL BLUE - PHASE 2+) */
-        .atmosphere {
-            position: fixed; inset: 0; pointer-events: none;
-            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #050510 80%);
-            opacity: 0; transition: opacity 3s ease; z-index: 0;
-        }
-        .atmosphere-active { opacity: 1; }
-
-        /* GLASS ENGINE */
-        .glass-hud { background: rgba(8, 8, 18, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255, 255, 255, 0.1); }
-        .glass-panel { background: rgba(15, 15, 35, 0.4); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 60px -10px rgba(0,0,0,0.8); }
-
-        /* KINETIC */
-        .kinetic-viewport {
-            background-color: #000;
-            position: relative;
-            z-index: 10;
-        }
-        .kinetic-loop { position: absolute; inset: 0; transition: opacity 0.2s ease; mix-blend-mode: screen; opacity: 0; }
-        .kinetic-active { opacity: 1; animation: flash 0.15s infinite; }
-        @keyframes flash { 0% { filter: brightness(1); } 50% { filter: brightness(1.6); } 100% { filter: brightness(1); } }
-
-        /* TYPOGRAPHY - HUGE MAPPING */
-        .huge-mapping { font-weight: 900; letter-spacing: -0.05em; line-height: 0.9; }
-        .season-banner {
-            background: linear-gradient(90deg, #D4AF37 0%, #FDE047 50%, #D4AF37 100%);
-            background-size: 200% auto; animation: shine 3s linear infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
-        
-        /* ORACLE SCANNER */
-        .oracle-scanner {
-            background: linear-gradient(180deg, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.3) 50%, rgba(56, 189, 248, 0) 100%);
-            height: 2px; width: 100%; position: absolute; top: 0;
-            animation: scanDown 2.5s ease-in-out infinite;
-        }
-        @keyframes scanDown { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-
-        /* GENESIS STREAM */
-        .genesis-stream-container {
-            position: absolute; top: 0; bottom: 0; right: 0; width: 350px;
-            overflow: hidden; pointer-events: none; opacity: 0.3;
-            mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-            z-index: 1;
-        }
-        .genesis-content { animation: scrollUp 60s linear infinite; }
-        @keyframes scrollUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
-
-        /* SYNC BUTTON - HIGH LIGHTING */
-        .sync-highlight { box-shadow: 0 0 50px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.1); }
-        .sync-active {
-            box-shadow: 0 0 150px rgba(255, 255, 255, 0.6), inset 0 0 50px rgba(255, 255, 255, 0.4);
-            border-color: #FFF !important;
-            transform: scale(1.1);
-        }
-
-        /* BIO PULSE */
-        .bio-pulse { animation: heartbeat 3s infinite ease-in-out; }
-        @keyframes heartbeat { 
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); } 
-            50% { transform: scale(1.05); box-shadow: 0 0 30px 5px rgba(212, 175, 55, 0.2); border-color: rgba(212, 175, 55, 0.8); } 
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.1); border-color: rgba(212, 175, 55, 0.3); } 
-        }
-
-        /* ICONS & THEME */
-        .text-azure { color: #38bdf8; }
-        .btn-primary { 
-            background: linear-gradient(135deg, #e0e7ff 0%, #cbd5e1 100%); 
-            color: #0f172a; 
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-        }
-        .btn-primary:hover { transform: scale(1.03); box-shadow: 0 0 40px rgba(56, 189, 248, 0.4); }
-
+        /* GLASS UI */
+        .glass-hud { background: rgba(8, 8, 12, 0.95); backdrop-filter: blur(20px); border-left: 1px solid rgba(255, 255, 255, 0.08); box-shadow: -20px 0 50px -10px rgba(0,0,0,0.8); }
+        .glass-panel { background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); }
         .btn-ignite { background: radial-gradient(circle at center, #FFF, #E5E5E5); box-shadow: 0 0 30px rgba(255, 255, 255, 0.1); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .btn-ignite:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(212, 175, 55, 0.5); }
-
-        .filter-noir { filter: grayscale(100%) contrast(120%); }
-        .filter-neon { filter: contrast(110%) saturate(150%) hue-rotate(-10deg); }
+        .oracle-scanner { background: linear-gradient(180deg, rgba(212, 175, 55, 0) 0%, rgba(212, 175, 55, 0.2) 50%, rgba(212, 175, 55, 0) 100%); height: 2px; width: 100%; position: absolute; top: 0; animation: scanDown 2s ease-in-out infinite; }
+        @keyframes scanDown { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+        .kinetic-loop { position: absolute; inset: 0; transition: opacity 0.1s ease; mix-blend-mode: hard-light; }
+        .kinetic-active { opacity: 1; animation: flash 0.1s infinite; }
+        @keyframes flash { 0% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.05); filter: brightness(1.2); } 100% { transform: scale(1); } }
         .xray-active { opacity: 0.3 !important; filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(50deg) saturate(200%) !important; }
-        .xray-grid { background-image: linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px); background-size: 40px 40px; perspective: 1000px; transform: rotateX(60deg) translateY(-100px) scale(2); opacity: 0; transition: opacity 0.5s ease; }
+        .xray-grid { background-image: linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px); background-size: 40px 40px; perspective: 1000px; transform: rotateX(60deg) translateY(-100px) scale(2); opacity: 0; transition: opacity 0.5s ease; }
         .xray-visible { opacity: 1; animation: gridScroll 10s linear infinite; }
         @keyframes gridScroll { from { background-position: 0 0; } to { background-position: 0 40px; } }
         .light-orb { width: 40px; height: 40px; background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(212, 175, 55, 0.5) 50%, transparent 70%); border-radius: 50%; position: absolute; cursor: grab; filter: blur(5px); mix-blend-mode: screen; z-index: 50; }
         .light-orb:active { cursor: grabbing; transform: scale(1.2); }
-
-        ::-webkit-scrollbar { display: none; }
+        .filter-noir { filter: grayscale(100%) contrast(120%); }
+        .filter-neon { filter: contrast(110%) saturate(150%) hue-rotate(-10deg); }
+        .season-banner { background: linear-gradient(90deg, #D4AF37 0%, #FDE047 50%, #D4AF37 100%); background-size: 200% auto; animation: shine 3s linear infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        @keyframes shine { to { background-position: 200% center; } }
     </style>
 </head>
 <body>
@@ -160,32 +105,85 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
-        // --- ICONS (FIXED) ---
+        // --- INTERNAL ICONS ---
         const Icon = ({ name, size = 16, className = "" }) => {
-            const s = size; const c = `stroke-current ${className}`; const p = { strokeWidth: 3, fill: "none", strokeLinecap: "round", strokeLinejoin: "round" };
-            if (name === 'lock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-            if (name === 'zap') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>;
-            if (name === 'cpu') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>;
-            if (name === 'activity') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>;
-            if (name === 'login') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>;
-            if (name === 'eye') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
-            if (name === 'briefcase') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>;
-            if (name === 'heart') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>;
-            if (name === 'server') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>;
-            if (name === 'grid') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>;
-            if (name === 'sparkles') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.2-1.2L12 3Z"/></svg>;
-            if (name === 'network') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>;
-            if (name === 'fastforward') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg>;
-            if (name === 'logout') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>;
+            const s = size; const c = `stroke-current ${className}`; const p = { strokeWidth: 2, fill: "none", strokeLinecap: "round", strokeLinejoin: "round" };
+            
+            if (name === 'Activity') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>;
+            if (name === 'Zap') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>;
+            if (name === 'Cpu') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>;
+            if (name === 'Briefcase') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>;
+            if (name === 'Lock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+            if (name === 'Unlock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>;
+            if (name === 'ArrowRight') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>;
+            if (name === 'Globe') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10z"/></svg>;
+            if (name === 'Sparkles') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.2-1.2L12 3Z"/></svg>;
+            if (name === 'Play') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="5 3 19 12 5 21 5 3"/></svg>;
+            if (name === 'Plus') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
+            if (name === 'Check') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polyline points="20 6 9 17 4 12"/></svg>;
+            if (name === 'GitBranch') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>;
+            if (name === 'Database') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
+            if (name === 'Crown') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>;
+            if (name === 'Server') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>;
+            if (name === 'Eye') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
+            if (name === 'ScanFace') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9 12h.01"/><path d="M15 12h.01"/></svg>;
+            if (name === 'Layers') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>;
+            if (name === 'Grid') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>;
+            if (name === 'User') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+            if (name === 'Ticket') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2"/><path d="M13 17v2"/><path d="M13 11v2"/></svg>;
+            if (name === 'Calendar') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>;
+            if (name === 'FastForward') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg>;
+            if (name === 'Network') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>;
+            if (name === 'ZoomIn') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>;
+            if (name === 'TrendingUp') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
+            if (name === 'LogIn') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>;
             return null;
+        };
+
+        // --- AUTH HOOK (Real Logic) ---
+        const useAuth = () => {
+            const [user, setUser] = useState(null);
+            const [loading, setLoading] = useState(true);
+
+            useEffect(() => {
+                const checkFirebase = setInterval(() => {
+                    if (window.auth && window.onAuthStateChanged) {
+                        clearInterval(checkFirebase);
+                        window.onAuthStateChanged(window.auth, (u) => {
+                            setUser(u);
+                            setLoading(false);
+                        });
+                    }
+                }, 100);
+                return () => clearInterval(checkFirebase);
+            }, []);
+
+            const signIn = async () => {
+                if (!window.auth) return alert("Firebase Config Missing!");
+                try {
+                    await window.signInWithPopup(window.auth, window.googleProvider);
+                } catch (error) {
+                    console.error("Login Failed", error);
+                }
+            };
+
+            return { user, loading, signIn };
         };
 
         // --- SOUND ENGINE ---
         const SoundEngine = {
             ctx: null,
-            init: function() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
+            init: function() { 
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            },
             playTone: function(freq, type, duration, vol = 0.1) {
-                this.init(); const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
+                this.init();
+                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
                 osc.type = type; osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
                 gain.gain.setValueAtTime(vol, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
                 osc.connect(gain); gain.connect(this.ctx.destination);
@@ -206,229 +204,112 @@
             }
         };
 
-        // --- GENESIS STREAM DATA (HISTORY) ---
-        const GENESIS_LOGS = [
-            { ver: "v43.0", date: "NOW", event: "True First Priority. Huge Mapping Restored." },
-            { ver: "v42.0", date: "YESTERDAY", event: "Authentic Restoration. Context Secured." },
-            { ver: "v38.0", date: "YESTERDAY", event: "Visual Sovereign. Huge Mapping Restored." },
-            { ver: "v34.0", date: "YESTERDAY", event: "Unshackled Sovereign. Real-Mode Enforced." },
-            { ver: "v24.0", date: "DEC 25", event: "Complete Vision. Soul Algorithm Active." },
-            { ver: "v21.0", date: "DEC 24", event: "Neural Sync Calibration Deployed." },
-            { ver: "v18.0", date: "DEC 22", event: "Iron Spine Identity Protocol Secured." },
-            { ver: "v16.0", date: "DEC 20", event: "Holo-Deck & X-Ray Vision Integrated." },
-            { ver: "v14.0", date: "DEC 18", event: "Fractal Zoom Technology Online." },
-            { ver: "v10.0", date: "DEC 12", event: "Nexus Economy & Genealogy Tree Established." },
-            { ver: "v08.0", date: "DEC 08", event: "HyperLoop Financial Core." },
-            { ver: "v01.0", date: "NOV 01", event: "Project CineGenesis Initiated." }
-        ];
-
         // --- COMPONENTS ---
 
-        // 1. GENESIS STREAM
-        const GenesisStream = () => (
-            <div className="genesis-stream-container hidden md:block">
-                <div className="genesis-content space-y-6 px-6">
-                    {[...GENESIS_LOGS, ...GENESIS_LOGS].map((log, i) => (
-                        <div key={i} className="opacity-60 hover:opacity-100 transition-opacity">
-                            <div className="flex justify-between text-[9px] font-bold text-[#38bdf8] mb-1">
-                                <span>{log.ver}</span><span>{log.date}</span>
-                            </div>
-                            <div className="text-[10px] font-mono text-gray-400 leading-relaxed border-l border-white/10 pl-3">
-                                {log.event}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-
-        // 2. KINETIC SYNC (SHARP BLACK START - HUGE MAPPING)
+        // KINETIC SYNC
         const KineticSync = ({ onComplete }) => {
-            const [syncing, setSyncing] = useState(false);
-            const [mode, setMode] = useState(0);
-            const timer = useRef(null);
-            // ONLY BLUE/CYAN/GOLD LOOPS
-            const loops = ['radial-gradient(circle, #3B82F6 0%, transparent 70%)', 'radial-gradient(circle, #06b6d4 0%, transparent 70%)', 'radial-gradient(circle, #D4AF37 0%, transparent 70%)'];
+            const [activeLoop, setActiveLoop] = useState(0);
+            const [isScanning, setIsScanning] = useState(false);
+            const intervalRef = useRef(null);
+            const loops = [{type:'VELOCITY', bg:'linear-gradient(45deg, #ff0000, #000)'}, {type:'DREAM', bg:'radial-gradient(circle, #0000ff, #000)'}, {type:'GLITCH', bg:'repeating-linear-gradient(90deg, #333, #000 10px)'}];
 
-            const start = () => { SoundEngine.init(); setSyncing(true); timer.current = setInterval(() => { setMode(m => (m + 1) % 3); SoundEngine.playStrobe(); }, 150); };
-            const stop = () => { clearInterval(timer.current); if (syncing) { SoundEngine.playSuccess(); onComplete(); } setSyncing(false); };
+            const startScan = () => { 
+                SoundEngine.init();
+                setIsScanning(true); 
+                if (intervalRef.current) clearInterval(intervalRef.current);
+                intervalRef.current = setInterval(() => { setActiveLoop(p => (p + 1) % loops.length); SoundEngine.playStrobe(); }, 150); 
+            };
+            const stopScan = () => { 
+                if (!isScanning) return;
+                setIsScanning(false); 
+                clearInterval(intervalRef.current); 
+                intervalRef.current = null;
+                SoundEngine.playSuccess();
+                setTimeout(onComplete, 500); 
+            };
+            useEffect(() => { return () => { if (intervalRef.current) clearInterval(intervalRef.current); }; }, []);
 
             return (
-                <div className="h-screen w-full flex flex-col items-center justify-center kinetic-viewport select-none cursor-pointer relative overflow-hidden" 
-                     onMouseDown={start} onMouseUp={stop} onTouchStart={start} onTouchEnd={stop}>
-                    {loops.map((bg, i) => (
-                        <div key={i} className={`kinetic-loop ${syncing && mode === i ? 'kinetic-active' : ''}`} style={{ background: bg }}></div>
-                    ))}
-                    <div className="z-10 text-center flex flex-col items-center">
-                        <h2 className="text-xl md:text-3xl font-mono tracking-[1em] text-white/30 mb-12 uppercase font-black">Neural Calibration</h2>
-                        <div className="relative mb-24">
-                            {/* HUGE MAPPING TYPOGRAPHY */}
-                            <div className="text-8xl md:text-[16rem] huge-mapping italic text-white season-banner">Hold to Sync</div>
-                            <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-                                <div className="text-[20rem] font-black text-white/50 tracking-tighter">VELOCITY</div>
-                            </div>
-                        </div>
-                        {/* GIANT SYNC BUTTON */}
-                        <div className={`w-40 h-40 md:w-56 md:h-56 rounded-full border-[12px] border-white/10 flex items-center justify-center transition-all duration-300 sync-highlight ${syncing ? 'bg-white sync-active shadow-[0_0_100px_white]' : 'bg-transparent'}`}>
-                            <Icon name="fastforward" size={80} className={syncing ? 'text-black' : 'text-white'} />
-                        </div>
+                <div className="w-full flex-1 flex flex-col items-center justify-center h-full relative overflow-hidden bg-black select-none" onMouseDown={startScan} onMouseUp={stopScan} onMouseLeave={stopScan} onTouchStart={startScan} onTouchEnd={stopScan}>
+                    <div className="absolute inset-0 z-0">{loops.map((l, i) => (<div key={i} className={`kinetic-loop ${i === activeLoop ? 'kinetic-active' : ''}`} style={{ background: l.bg }}></div>))}</div>
+                    <div className="relative z-10 text-center space-y-8">
+                        <h2 className="text-3xl font-bold text-white tracking-widest uppercase mix-blend-difference">{isScanning ? 'SYNCING RHYTHM...' : 'HOLD TO CALIBRATE'}</h2>
+                        <div className="text-[80px] md:text-[120px] font-black text-transparent bg-clip-text bg-white opacity-20 select-none">{loops[activeLoop].type}</div>
+                        <div className={`w-24 h-24 mx-auto rounded-full border-4 border-white/20 flex items-center justify-center transition-all duration-100 ${isScanning ? 'bg-white scale-110 shadow-[0_0_100px_white]' : 'bg-transparent hover:border-white'}`}><Icon name="FastForward" size={32} className={isScanning ? 'text-black' : 'text-white'} /></div>
                     </div>
                 </div>
             );
         };
 
-        // 3. LOGIN WALL
+        // LOGIN WALL
         const LoginWall = ({ onLogin }) => {
             const { signIn, loading } = useAuth();
             return (
-                <div className="h-screen w-full flex items-center justify-center relative overflow-hidden bg-black/95">
-                    <GenesisStream />
-                    {/* NO FOG LAYER HERE - SHARP CONTRAST */}
-                    <div className="relative z-10 w-full max-w-lg glass-panel p-20 rounded-[3rem] text-center space-y-12 shadow-[0_0_100px_rgba(56,189,248,0.1)] animate-in fade-in zoom-in duration-700">
-                        {/* RESTORED GOLD CIRCULAR LOCK ICON */}
-                        <div className="w-24 h-24 mx-auto bg-white/5 rounded-full flex items-center justify-center border-[4px] border-[#D4AF37] bio-pulse shadow-[0_0_40px_rgba(212,175,55,0.3)]">
-                            <Icon name="lock" size={48} className="text-[#D4AF37]" />
-                        </div>
-                        <div>
-                            <h2 className="text-5xl font-serif font-black text-white tracking-widest uppercase mb-4">Neural Link</h2>
-                            <p className="text-sm text-white/30 font-mono uppercase tracking-[0.5em]">Identity Protocol</p>
-                        </div>
-                        <button onClick={onLogin} disabled={loading} className="w-full py-6 bg-white text-black font-black text-lg tracking-[0.4em] rounded-2xl uppercase hover:scale-105 transition-all shadow-2xl">
-                            {loading ? "INITIALIZING LINK..." : "CONNECT IDENTITY"}
-                        </button>
-                        <div className="pt-6 border-t border-white/5 opacity-20">
-                            <p className="text-[10px] font-mono uppercase tracking-[0.4em]">Iron Spine Secure</p>
-                        </div>
+                <div className="w-full flex-1 flex flex-col items-center justify-center h-full bg-black animate-fade-in relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-20" style={{ background: `radial-gradient(circle at 50% 50%, #D4AF37, transparent 70%)` }}></div>
+                    <div className="relative z-10 w-96 bg-[#0f111a]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl text-center space-y-6">
+                        <div className="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center border border-[#D4AF37]"><Icon name="Lock" size={24} className="text-[#D4AF37]" /></div>
+                        <div><h2 className="text-2xl font-serif text-white tracking-widest">NEURAL LINK</h2><p className="text-[10px] text-gray-500 font-mono mt-2">ESTABLISH IDENTITY TO ACCESS OS</p></div>
+                        <button onClick={onLogin} className="w-full py-3 bg-white hover:bg-gray-200 text-black font-bold text-xs rounded-lg tracking-widest transition-all flex items-center justify-center gap-2">{loading ? "CONNECTING..." : <><Icon name="LogIn" size={14} /> CONNECT IDENTITY</>}</button>
+                        <div className="text-[9px] text-gray-600">SECURE ENCRYPTED CONNECTION</div>
                     </div>
                 </div>
             );
         };
 
-        // 4. ORACLE HUD
-        const OracleHUD = ({ score, value, match, soul }) => (
-            <div className="absolute top-[-160px] left-1/2 -translate-x-1/2 w-80 glass-panel border-[#38bdf8]/30 rounded-2xl p-4 shadow-[0_0_50px_rgba(56,189,248,0.2)] animate-fade-in z-50">
-                <div className="flex justify-between items-center mb-3 border-b border-white/5 pb-2">
-                    <span className="text-[10px] font-bold text-[#38bdf8] flex items-center gap-1"><Icon name="eye" size={12} /> THE ORACLE</span>
-                    <span className="text-[9px] font-mono text-gray-500 uppercase font-bold tracking-widest">Analysis</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-white/5 p-2 rounded text-center"><div className="text-[9px] text-gray-400">VIRALITY</div><div className="text-lg font-bold text-white font-mono">{score}/100</div></div>
-                    <div className="bg-white/5 p-2 rounded text-center"><div className="text-[9px] text-gray-400">VALUATION</div><div className="text-lg font-bold text-green-400 font-mono">${value}</div></div>
-                </div>
-                <div className="flex justify-between items-center mb-3 px-1">
-                    <span className="text-[9px] text-gray-400 flex items-center gap-1"><Icon name="heart" size={10} className="text-purple-400" /> SOUL:</span>
-                    <span className="text-[9px] font-mono text-purple-300 font-bold tracking-tighter">{soul}</span>
-                </div>
-                <div className="bg-[#38bdf8]/10 border border-[#38bdf8]/20 p-2 rounded flex items-center gap-2"><Icon name="briefcase" size={12} className="text-[#38bdf8]" /><div><div className="text-[9px] font-bold text-gray-200 uppercase tracking-widest">Match: {match}</div></div></div>
+        // ORACLE HUD
+        const OracleHUD = ({ score, value, match }) => (
+            <div className="absolute top-[-140px] left-1/2 -translate-x-1/2 w-80 bg-[#0f111a]/95 backdrop-blur-xl border border-veo-gold/30 rounded-2xl p-4 shadow-[0_0_50px_rgba(212,175,55,0.2)] animate-fade-in z-50">
+                <div className="flex justify-between items-center mb-3 border-b border-white/5 pb-2"><span className="text-[10px] font-bold text-veo-gold flex items-center gap-1"><Icon name="Eye" size={12} /> THE ORACLE</span><span className="text-[9px] font-mono text-gray-500">PRE-MARKET ANALYSIS</span></div>
+                <div className="grid grid-cols-2 gap-2 mb-3"><div className="bg-white/5 p-2 rounded text-center"><div className="text-[9px] text-gray-400">VIRALITY</div><div className="text-lg font-bold text-white font-mono">{score}/100</div></div><div className="bg-white/5 p-2 rounded text-center"><div className="text-[9px] text-gray-400">VALUATION</div><div className="text-lg font-bold text-veo-green font-mono">${value}</div></div></div>
+                <div className="bg-veo-gold/10 border border-veo-gold/20 p-2 rounded flex items-center gap-2"><Icon name="Briefcase" size={12} className="text-veo-gold" /><div><div className="text-[9px] font-bold text-gray-200">MATCH: {match}</div></div></div>
             </div>
         );
 
-        // 5. NEXUS HUD
+        // NEXUS HUD
         const NexusHUD = ({ isOpen, onClose, balance }) => {
             if (!isOpen) return null;
             return (
                 <div className="w-80 h-full glass-hud flex flex-col font-sans animate-slide-left z-50 absolute right-0 top-0 bottom-0 border-l border-white/10">
-                    <div className="h-14 border-b border-white/10 flex items-center justify-between px-4 bg-black/40"><div className="flex items-center gap-2"><Icon name="activity" size={14} className="text-[#38bdf8]" /><span className="text-xs font-bold text-white tracking-widest">NEXUS</span></div><button onClick={() => { SoundEngine.playClick(); onClose(); }} className="text-gray-500 hover:text-white">✕</button></div>
+                    <div className="h-14 border-b border-white/10 flex items-center justify-between px-4 bg-black/40"><div className="flex items-center gap-2"><Icon name="Activity" size={14} className="text-veo-gold" /><span className="text-xs font-bold text-white tracking-widest">NEXUS</span></div><button onClick={() => { SoundEngine.playClick(); onClose(); }} className="text-gray-500 hover:text-white">✕</button></div>
                     <div className="p-3 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-b border-white/5 flex justify-between items-center"><span className="text-[10px] font-bold text-purple-400">SEASON ENDS</span><span className="text-[10px] font-mono text-white">12D : 04H</span></div>
-                    <div className="p-4 bg-white/5 border-b border-white/5"><div className="flex justify-between items-center mb-3"><span className="text-[10px] text-gray-400">NET WORTH</span><span className="text-sm font-bold text-white font-mono">{balance.toLocaleString()} FLUX</span></div><button className="w-full py-2 rounded flex items-center justify-center gap-2 text-[10px] font-bold bg-green-500/20 text-green-400 border border-green-500/30"><Icon name="server" size={12} className="animate-pulse" /> HIVE MINING: ACTIVE</button></div>
-                    <div className="p-4 space-y-4"><div className="bg-[#0f111a] border border-veo-gold/20 rounded-lg p-3"><h4 className="text-[10px] font-bold text-white mb-2 flex gap-2"><Icon name="cpu" size={12} /> COMPUTE SWAP</h4><button className="w-full py-1.5 bg-veo-gold text-black text-[9px] font-bold rounded">TRADE EQUITY</button></div><div className="bg-white/5 border border-white/5 rounded-lg p-3"><div className="flex justify-between mb-1"><span className="text-[10px] text-gray-300 font-bold">Asset_01</span><span className="text-[9px] text-green-400">+450 CR</span></div><div className="text-[9px] text-gray-500">Viral (1.2M Views)</div></div></div>
+                    <div className="p-4 bg-white/5 border-b border-white/5"><div className="flex justify-between items-center mb-3"><span className="text-[10px] text-gray-400">NET WORTH</span><span className="text-sm font-bold text-white font-mono">{balance.toLocaleString()} FLUX</span></div><button className="w-full py-2 rounded flex items-center justify-center gap-2 text-[10px] font-bold bg-veo-green/20 text-veo-green border border-veo-green/30"><Icon name="Server" size={12} className="animate-pulse" /> HIVE MINING: ACTIVE</button></div>
+                    <div className="p-4 space-y-4"><div className="bg-[#0f111a] border border-veo-gold/20 rounded-lg p-3"><h4 className="text-[10px] font-bold text-white mb-2 flex gap-2"><Icon name="Cpu" size={12} /> COMPUTE SWAP</h4><button className="w-full py-1.5 bg-veo-gold text-black text-[9px] font-bold rounded">TRADE EQUITY</button></div><div className="bg-white/5 border border-white/5 rounded-lg p-3"><div className="flex justify-between mb-1"><span className="text-[10px] text-gray-300 font-bold">Asset_01</span><span className="text-[9px] text-veo-green">+450 CR</span></div><div className="text-[9px] text-gray-500">Viral (1.2M Views)</div></div></div>
                 </div>
             );
         };
 
-        // --- AUTH HOOK (Context Aware) ---
-        const useAuth = () => {
-            const [user, setUser] = useState(null);
-            const [loading, setLoading] = useState(false);
-
-            useEffect(() => {
-                const checkFirebase = setInterval(() => {
-                    if (window.auth && window.onAuthStateChanged) {
-                        clearInterval(checkFirebase);
-                        window.onAuthStateChanged(window.auth, (u) => {
-                            if (u) {
-                                setUser(u);
-                            }
-                        });
-                    }
-                }, 100);
-                return () => clearInterval(checkFirebase);
-            }, []);
-
-            const signIn = async () => {
-                setLoading(true);
-                if (!window.auth || !window.signInWithPopup) {
-                    alert("System Bridge Not Established.");
-                    setLoading(false);
-                    return;
-                }
-                try {
-                    await window.signInWithPopup(window.auth, window.googleProvider);
-                    // SUCCESS IS HANDLED BY AUTH STATE LISTENER ABOVE
-                } catch (error) {
-                    console.error("Login Failed", error);
-                    alert("Authentication Error: " + error.message);
-                    setLoading(false);
-                }
-            };
-
-            return { user, loading, signIn };
-        };
-
         // --- MAIN APP ---
         const CineGenesisApp = () => {
-            const [view, setView] = useState('KINETIC'); 
+            const [view, setView] = useState('KINETIC'); 
             const [script, setScript] = useState("");
             const [persona, setPersona] = useState('AUTEUR');
             const [oracle, setOracle] = useState(null);
             const [bootLogs, setBootLogs] = useState([]);
-            
+             
             // STUDIO STATES
             const [showNexus, setShowNexus] = useState(false);
             const [activeLens, setActiveLens] = useState('STD');
             const [xrayActive, setXrayActive] = useState(false);
             const [lightPos, setLightPos] = useState({ x: 50, y: 30 });
             const [showExchange, setShowExchange] = useState(false);
-            const [user, setUser] = useState(null);
-            const [calibrationComplete, setCalibrationComplete] = useState(false);
 
-            // AUTH CHECK (Wait for Kinetic)
-            useEffect(() => {
-                const interval = setInterval(() => {
-                    if (window.fbOnAuth) {
-                        clearInterval(interval);
-                        window.fbOnAuth(window.auth, (u) => {
-                            if (u) {
-                                setUser(u);
-                            }
-                        });
-                    }
-                }, 100);
-                return () => clearInterval(interval);
-            }, [calibrationComplete]);
-
-            // Logic: Context Aware Transition
-            useEffect(() => {
-                if (calibrationComplete) {
-                    if (user) setView('INCUBATION');
-                    else setView('LOGIN');
-                }
-            }, [user, calibrationComplete]);
+            // AUTH
+            const { user, signIn } = useAuth();
 
             // PATCHED BRAIN LOGIC
             useEffect(() => {
                 if (script.length > 10 && !oracle) {
                     let match = 'GENERIC';
-                    let soul = 'NEUTRAL';
                     const lower = script.toLowerCase();
-                    if (lower.includes('impossible') || lower.includes('stripe')) match = 'ADIDAS';
-                    else if (lower.includes('do it') || lower.includes('swoosh')) match = 'NIKE';
-                    
-                    if (lower.includes('love') || lower.includes('pain')) soul = 'HIGH_RESONANCE';
-                    else if (lower.includes('robot') || lower.includes('future')) soul = 'SYNTHETIC';
+                    if (lower.includes('impossible') || lower.includes('stripe') || lower.includes('original')) match = 'ADIDAS';
+                    else if (lower.includes('do it') || lower.includes('swoosh') || lower.includes('air')) match = 'NIKE';
+                    else if (lower.includes('taste') || lower.includes('cola') || lower.includes('red')) match = 'COCA-COLA';
+                    else if (lower.includes('mars') || lower.includes('rocket')) match = 'SPACEX';
+                    else if (lower.includes('einstein') || lower.includes('genius')) match = 'NAT_GEO'; 
 
                     const score = Math.min(98, 40 + (script.length/2) + (match !== 'GENERIC' ? 20 : 0));
-                    setOracle({ score, value: (score * 1.5).toFixed(0), match, soul });
+                    setOracle({ score, value: (score * 1.5).toFixed(0), match });
                     SoundEngine.playOracle();
                 }
             }, [script]);
@@ -445,32 +326,39 @@
                 }, 600);
             };
 
-            const handleLogout = async () => {
-                if (window.fbSignOut) await window.fbSignOut(window.auth);
-                setUser(null); setView('LOGIN');
+            const handleLogin = () => {
+                if (window.auth) {
+                    signIn().then(() => setView('INCUBATION'));
+                } else {
+                    alert("Firebase Config Missing. Entering Demo Mode.");
+                    setView('INCUBATION');
+                }
             };
 
+            useEffect(() => {
+                if (user && view === 'LOGIN') setView('INCUBATION');
+            }, [user]);
+
             return (
-                <div className="w-full h-screen bg-[#000000] text-[#E5E5E5] font-sans overflow-hidden relative selection:bg-veo-gold selection:text-black flex">
-                    
-                    {/* GLOBAL AMBIENT LAYER (STUDIO ONLY) */}
-                    <div className={`atmosphere ${view !== 'KINETIC' ? 'atmosphere-active' : ''}`}></div>
+                <div className="w-full h-screen bg-[#050505] text-[#E5E5E5] font-sans overflow-hidden relative selection:bg-veo-gold selection:text-black flex">
+                    <div className="absolute inset-0 transition-colors duration-[3000ms] pointer-events-none opacity-20" style={{ background: `radial-gradient(circle at 50% 30%, #3B82F6, transparent 70%)` }}></div>
 
                     {/* PHASE 0: KINETIC SYNC */}
-                    {view === 'KINETIC' && <KineticSync onComplete={() => { setCalibrationComplete(true); setView('LOGIN'); }} />}
+                    {view === 'KINETIC' && <KineticSync onComplete={() => setView('LOGIN')} />}
 
-                    {/* PHASE 0.5: LOGIN WALL (The Iron Spine) */}
-                    {view === 'LOGIN' && <LoginWall onLogin={signIn} />}
+                    {/* PHASE 0.5: LOGIN WALL */}
+                    {view === 'LOGIN' && <LoginWall onLogin={handleLogin} />}
 
                     {/* PHASE 1: INCUBATION */}
                     {view === 'INCUBATION' && (
                         <div className="w-full flex-1 flex flex-col items-center justify-center p-6 animate-fade-in relative">
+                            {/* USER STATUS */}
                             <div className="absolute top-6 right-6 flex items-center gap-3">
                                 <div className="text-right">
                                     <div className="text-[10px] font-bold text-white">{user?.displayName || "GUEST_USER"}</div>
-                                    <div className="text-[9px] text-[#38bdf8] font-mono">TIER: FREE</div>
+                                    <div className="text-[9px] text-[#D4AF37] font-mono">TIER: FREE</div>
                                 </div>
-                                <div className="w-8 h-8 rounded-full bg-gray-800 border border-white/20 flex items-center justify-center text-xs overflow-hidden cursor-pointer" onClick={handleLogout}>
+                                <div className="w-8 h-8 rounded-full bg-gray-800 border border-white/20 flex items-center justify-center text-xs overflow-hidden">
                                     {user?.photoURL ? <img src={user.photoURL} className="w-full h-full" /> : "U"}
                                 </div>
                             </div>
@@ -514,9 +402,9 @@
                                     <div className="text-[10px] font-mono text-gray-500">GENESIS_01 // {persona}</div>
                                     <div className="h-4 w-[1px] bg-white/10"></div>
                                     <div className="flex gap-2">
-                                        {['STD', 'NOIR', 'NEON'].map(l => (<button key={l} onClick={() => { setActiveLens(l); SoundEngine.playClick(); }} className={`px-4 py-1 rounded border text-[10px] font-black ${activeLens === l ? 'lens-active' : 'border-white/10 text-gray-500'}`}>{l}</button>))}
+                                        {['STD', 'NOIR', 'NEON'].map(l => (<button key={l} onClick={() => { setActiveLens(l); SoundEngine.playClick(); }} className={`px-2 py-1 rounded border text-[9px] font-bold ${activeLens === l ? 'lens-active' : 'border-white/10 text-gray-500'}`}>{l}</button>))}
                                     </div>
-                                    <button onClick={() => { setXrayActive(!xrayActive); SoundEngine.playXray(); }} className={`flex items-center gap-2 px-6 py-2 rounded-full text-xs font-black border transition-all ${xrayActive ? 'bg-veo-green/20 border-veo-green text-veo-green animate-pulse' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'}`}><Icon name="Grid" size={12} /> X-RAY</button>
+                                    <button onClick={() => { setXrayActive(!xrayActive); SoundEngine.playXray(); }} className={`flex items-center gap-2 px-3 py-1 rounded text-[9px] font-bold border transition-all ${xrayActive ? 'bg-veo-green/20 border-veo-green text-veo-green animate-pulse' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'}`}><Icon name="Grid" size={10} /> X-RAY</button>
                                 </div>
                                 <button onClick={() => setShowNexus(!showNexus)} className="bg-veo-gold/10 text-veo-gold px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-2 border border-veo-gold/30"><Icon name="Activity" size={12} /> NEXUS HUD</button>
                             </div>
@@ -533,8 +421,8 @@
 
                             <div className="h-32 border-t border-white/5 bg-black/40 p-4 flex flex-col gap-2 relative z-10">
                                 <div className="flex justify-between items-center text-[10px] font-mono text-gray-500"><span>SEQUENCING</span><span>0 CREDITS</span></div>
-                                <div className="flex-1 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-                                    <div className="w-48 h-full rounded bg-white/5 border border-white/10 relative"><div className="absolute top-2 left-2 text-[9px] font-bold text-white uppercase tracking-widest font-bold">Scene 01</div></div>
+                                <div className="flex-1 flex gap-2 overflow-x-auto pb-1">
+                                    <div className="w-48 h-full rounded bg-white/5 border border-white/10 relative"><div className="absolute top-2 left-2 text-[9px] font-bold text-white">SCENE 01</div></div>
                                     <div className="w-48 h-full rounded border border-veo-gold bg-black/20 relative flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => SoundEngine.playClick()}><div className="flex flex-col items-center gap-1"><Icon name="Lock" size={14} className="text-veo-gold" /><span className="text-[8px] text-veo-gold font-bold">UNLOCK SCENE 02</span></div></div>
                                 </div>
                             </div>
@@ -551,3 +439,4 @@
     </script>
 </body>
 </html>
+

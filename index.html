@@ -5,18 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>CineGenesis: Clean Slate</title>
     
-    <!-- PWA MANIFEST -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#050505">
-    
     <!-- CORE LIBRARIES -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- FIREBASE SDK (Browser Compatible - The Working Engine) -->
+    <!-- FIREBASE SDK (Browser Compatible - Fixed Bridge) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -47,14 +42,14 @@
             window.fbSignOut = signOut;
             window.fbOnAuth = onAuthStateChanged;
             
-            console.log("OS: Iron Spine Bridge Active.");
+            console.log("OS: Clean Slate Bridge Active.");
         } catch (e) {
-            console.error("OS: Spine Connection Error.", e);
+            console.error("OS: Config Error.", e);
         }
     </script>
 
     <!-- FONTS -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <!-- CONFIG -->
     <script>
@@ -90,17 +85,11 @@
         .glass-panel { background: rgba(10, 10, 10, 0.4); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.06); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); }
         .btn-ignite { background: radial-gradient(circle at center, #FFF, #E5E5E5); box-shadow: 0 0 30px rgba(255, 255, 255, 0.1); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .btn-ignite:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(212, 175, 55, 0.5); }
-        
-        /* KINETIC LAYERS */
+        .oracle-scanner { background: linear-gradient(180deg, rgba(212, 175, 55, 0) 0%, rgba(212, 175, 55, 0.2) 50%, rgba(212, 175, 55, 0) 100%); height: 2px; width: 100%; position: absolute; top: 0; animation: scanDown 2s ease-in-out infinite; }
+        @keyframes scanDown { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
         .kinetic-loop { position: absolute; inset: 0; transition: opacity 0.1s ease; mix-blend-mode: hard-light; }
         .kinetic-active { opacity: 1; animation: flash 0.1s infinite; }
         @keyframes flash { 0% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.05); filter: brightness(1.2); } 100% { transform: scale(1); } }
-        
-        /* ORACLE SCANNER */
-        .oracle-scanner { background: linear-gradient(180deg, rgba(212, 175, 55, 0) 0%, rgba(212, 175, 55, 0.2) 50%, rgba(212, 175, 55, 0) 100%); height: 2px; width: 100%; position: absolute; top: 0; animation: scanDown 2s ease-in-out infinite; }
-        @keyframes scanDown { 0% { top: 0%; opacity: 0; } 50% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-
-        /* STUDIO ASSETS */
         .xray-active { opacity: 0.3 !important; filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(50deg) saturate(200%) !important; }
         .xray-grid { background-image: linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px); background-size: 40px 40px; perspective: 1000px; transform: rotateX(60deg) translateY(-100px) scale(2); opacity: 0; transition: opacity 0.5s ease; }
         .xray-visible { opacity: 1; animation: gridScroll 10s linear infinite; }
@@ -124,139 +113,12 @@
         // --- ICONS ---
         const Icon = ({ name, size = 16, className = "" }) => {
             const s = size; const c = `stroke-current ${className}`; const p = { strokeWidth: 2, fill: "none", strokeLinecap: "round", strokeLinejoin: "round" };
-            if (name === 'Lock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-            if (name === 'Zap') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>;
-            if (name === 'Cpu') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>;
-            if (name === 'Activity') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>;
-            if (name === 'Login') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>;
-            if (name === 'Eye') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
-            if (name === 'Briefcase') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>;
-            if (name === 'Server') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>;
-            if (name === 'Sparkles') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.2-1.2L12 3Z"/></svg>;
-            if (name === 'Network') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>;
-            if (name === 'FastForward') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg>;
-            if (name === 'Grid') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>;
+            if (name === 'lock') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+            if (name === 'login') return <svg width={s} height={s} viewBox="0 0 24 24" {...p} className={c}><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>;
             return null;
         };
 
-        // --- SOUND ENGINE ---
-        const SoundEngine = {
-            ctx: null,
-            init: function() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
-            playTone: function(freq, type, duration, vol = 0.1) {
-                this.init();
-                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-                osc.type = type; osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
-                gain.gain.setValueAtTime(vol, this.ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + duration);
-                osc.connect(gain); gain.connect(this.ctx.destination);
-                osc.start(); osc.stop(this.ctx.currentTime + duration);
-            },
-            playClick: function() { this.playTone(800, 'square', 0.05, 0.05); },
-            playStrobe: function() { this.playTone(150, 'sawtooth', 0.05, 0.1); },
-            playOracle: function() { this.playTone(400, 'triangle', 0.2, 0.05); },
-            playXray: function() { this.playTone(2000, 'sine', 0.3, 0.1); },
-            playSuccess: function() { this.playTone(600, 'sine', 0.1, 0.1); setTimeout(() => this.playTone(900, 'sine', 0.3, 0.1), 100); },
-            playIgnite: function() {
-                this.init();
-                const osc = this.ctx.createOscillator(); const gain = this.ctx.createGain();
-                osc.frequency.setValueAtTime(100, this.ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 1.5);
-                gain.gain.setValueAtTime(0.1, this.ctx.currentTime); gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 1.5);
-                osc.connect(gain); gain.connect(this.ctx.destination);
-                osc.start(); osc.stop(this.ctx.currentTime + 1.5);
-            }
-        };
-
-        // --- COMPONENTS ---
-
-        // KINETIC SYNC (RESTORED TO CLEAN SLATE PROPORTIONS)
-        const KineticSync = ({ onComplete }) => {
-            const [syncing, setSyncing] = useState(false);
-            const [mode, setMode] = useState(0);
-            const timer = useRef(null);
-            const loops = [{type:'VELOCITY', bg:'linear-gradient(45deg, #ff0000, #000)'}, {type:'DREAM', bg:'radial-gradient(circle, #0000ff, #000)'}, {type:'GLITCH', bg:'repeating-linear-gradient(90deg, #333, #000 10px)'}];
-
-            const start = () => { 
-                SoundEngine.init(); setSyncing(true); 
-                timer.current = setInterval(() => { setMode(m => (m + 1) % 3); SoundEngine.playStrobe(); }, 150); 
-            };
-            const stop = () => { 
-                if (!isScanning) return;
-                setIsScanning(false); 
-                clearInterval(intervalRef.current); 
-                intervalRef.current = null;
-                SoundEngine.playSuccess();
-                setTimeout(onComplete, 500); 
-            };
-            
-            // Helper state for above logic
-            const [activeLoop, setActiveLoop] = useState(0); 
-            const [isScanning, setIsScanning] = useState(false);
-
-            const startScan = () => {
-                 SoundEngine.init();
-                 setIsScanning(true);
-                 if (timer.current) clearInterval(timer.current);
-                 timer.current = setInterval(() => { setActiveLoop(p => (p + 1) % loops.length); SoundEngine.playStrobe(); }, 150);
-            };
-            const stopScan = () => {
-                if (!isScanning) return;
-                setIsScanning(false);
-                clearInterval(timer.current);
-                SoundEngine.playSuccess();
-                setTimeout(onComplete, 500);
-            };
-
-            return (
-                <div className="w-full flex-1 flex flex-col items-center justify-center h-full relative overflow-hidden bg-black select-none" onMouseDown={startScan} onMouseUp={stopScan} onMouseLeave={stopScan} onTouchStart={startScan} onTouchEnd={stopScan}>
-                    <div className="absolute inset-0 z-0">{loops.map((l, i) => (<div key={i} className={`kinetic-loop ${i === activeLoop ? 'kinetic-active' : ''}`} style={{ background: l.bg }}></div>))}</div>
-                    <div className="relative z-10 text-center space-y-8">
-                        <h2 className="text-3xl font-bold text-white tracking-widest uppercase mix-blend-difference">{isScanning ? 'SYNCING RHYTHM...' : 'HOLD TO CALIBRATE'}</h2>
-                        <div className="text-[80px] md:text-[120px] font-black text-transparent bg-clip-text bg-white opacity-20 select-none">{loops[activeLoop].type}</div>
-                        <div className={`w-24 h-24 mx-auto rounded-full border-4 border-white/20 flex items-center justify-center transition-all duration-100 ${isScanning ? 'bg-white scale-110 shadow-[0_0_100px_white]' : 'bg-transparent hover:border-white'}`}><Icon name="FastForward" size={32} className={isScanning ? 'text-black' : 'text-white'} /></div>
-                    </div>
-                </div>
-            );
-        };
-
-        // LOGIN WALL
-        const LoginWall = ({ onLogin }) => {
-            const { signIn, loading } = useAuth();
-            return (
-                <div className="w-full flex-1 flex flex-col items-center justify-center h-full bg-black animate-fade-in relative overflow-hidden">
-                    <div className="absolute inset-0 opacity-20" style={{ background: `radial-gradient(circle at 50% 50%, #D4AF37, transparent 70%)` }}></div>
-                    <div className="relative z-10 w-96 glass-panel p-10 rounded-2xl text-center space-y-6">
-                        <div className="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center border border-[#D4AF37]"><Icon name="Lock" size={24} className="text-[#D4AF37]" /></div>
-                        <div><h2 className="text-2xl font-serif text-white tracking-widest">NEURAL LINK</h2><p className="text-[10px] text-gray-500 font-mono mt-2">ESTABLISH IDENTITY TO ACCESS OS</p></div>
-                        <button onClick={signIn} className="w-full py-3 bg-white hover:bg-gray-200 text-black font-bold text-xs rounded-lg tracking-widest transition-all flex items-center justify-center gap-2">{loading ? "CONNECTING..." : <><Icon name="Login" size={14} /> CONNECT IDENTITY</>}</button>
-                        <div className="text-[9px] text-gray-600">SECURE ENCRYPTED CONNECTION</div>
-                    </div>
-                </div>
-            );
-        };
-
-        // ORACLE HUD
-        const OracleHUD = ({ score, value, match }) => (
-            <div className="absolute top-[-140px] left-1/2 -translate-x-1/2 w-80 bg-[#0f111a]/95 backdrop-blur-xl border border-veo-gold/30 rounded-2xl p-4 shadow-[0_0_50px_rgba(212,175,55,0.2)] animate-fade-in z-50">
-                <div className="flex justify-between items-center mb-3 border-b border-white/5 pb-2"><span className="text-[10px] font-bold text-veo-gold flex items-center gap-1"><Icon name="Eye" size={12} /> THE ORACLE</span><span className="text-[9px] font-mono text-gray-500">PRE-MARKET ANALYSIS</span></div>
-                <div className="grid grid-cols-2 gap-2 mb-3"><div className="bg-white/5 p-2 rounded text-center"><div className="text-[9px] text-gray-400">VIRALITY</div><div className="text-lg font-bold text-white font-mono">{score}/100</div></div><div className="bg-white/5 p-2 rounded text-center"><div className="text-[9px] text-gray-400">VALUATION</div><div className="text-lg font-bold text-veo-green font-mono">${value}</div></div></div>
-                <div className="bg-veo-gold/10 border border-veo-gold/20 p-2 rounded flex items-center gap-2"><Icon name="Briefcase" size={12} className="text-veo-gold" /><div><div className="text-[9px] font-bold text-gray-200">MATCH: {match}</div></div></div>
-            </div>
-        );
-
-        // NEXUS HUD
-        const NexusHUD = ({ isOpen, onClose, balance }) => {
-            if (!isOpen) return null;
-            return (
-                <div className="w-80 h-full glass-hud flex flex-col font-sans animate-slide-left z-50 absolute right-0 top-0 bottom-0 border-l border-white/10">
-                    <div className="h-14 border-b border-white/10 flex items-center justify-between px-4 bg-black/40"><div className="flex items-center gap-2"><Icon name="Activity" size={14} className="text-veo-gold" /><span className="text-xs font-bold text-white tracking-widest">NEXUS</span></div><button onClick={() => { SoundEngine.playClick(); onClose(); }} className="text-gray-500 hover:text-white">✕</button></div>
-                    <div className="p-3 bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-b border-white/5 flex justify-between items-center"><span className="text-[10px] font-bold text-purple-400">SEASON ENDS</span><span className="text-[10px] font-mono text-white">12D : 04H</span></div>
-                    <div className="p-4 bg-white/5 border-b border-white/5"><div className="flex justify-between items-center mb-3"><span className="text-[10px] text-gray-400">NET WORTH</span><span className="text-sm font-bold text-white font-mono">{balance.toLocaleString()} FLUX</span></div><button className="w-full py-2 rounded flex items-center justify-center gap-2 text-[10px] font-bold bg-veo-green/20 text-veo-green border border-veo-green/30"><Icon name="Server" size={12} className="animate-pulse" /> HIVE MINING: ACTIVE</button></div>
-                    <div className="p-4 space-y-4"><div className="bg-[#0f111a] border border-veo-gold/20 rounded-lg p-3"><h4 className="text-[10px] font-bold text-white mb-2 flex gap-2"><Icon name="Cpu" size={12} /> COMPUTE SWAP</h4><button className="w-full py-1.5 bg-veo-gold text-black text-[9px] font-bold rounded">TRADE EQUITY</button></div><div className="bg-white/5 border border-white/5 rounded-lg p-3"><div className="flex justify-between mb-1"><span className="text-[10px] text-gray-300 font-bold">Asset_01</span><span className="text-[9px] text-veo-green">+450 CR</span></div><div className="text-[9px] text-gray-500">Viral (1.2M Views)</div></div></div>
-                </div>
-            );
-        };
-
-        // --- AUTH HOOK (Context Aware) ---
+        // --- AUTH HOOK ---
         const useAuth = () => {
             const [user, setUser] = useState(null);
             const [loading, setLoading] = useState(true);
@@ -266,7 +128,7 @@
                     if (window.auth && window.fbOnAuth) {
                         clearInterval(checkFirebase);
                         window.fbOnAuth(window.auth, (u) => {
-                            if (u) setUser(u); // REAL USER
+                            setUser(u);
                             setLoading(false);
                         });
                     }
@@ -275,13 +137,12 @@
             }, []);
 
             const signIn = async () => {
-                if (!window.auth) return alert("Firebase Bridge Not Ready");
+                if (!window.auth) return alert("Config Missing.");
                 try {
                     await window.fbSignIn(window.auth, window.googleProvider);
-                    // SUCCESS IS HANDLED BY AUTH STATE LISTENER ABOVE
                 } catch (error) {
                     console.error("Login Failed", error);
-                    alert("Authentication Error: " + error.message);
+                    alert("Login Failed: " + error.message);
                 }
             };
 
@@ -289,167 +150,38 @@
         };
 
         // --- MAIN APP ---
-        const CineGenesisApp = () => {
-            const [view, setView] = useState('KINETIC'); 
-            const [script, setScript] = useState("");
-            const [persona, setPersona] = useState('AUTEUR');
-            const [oracle, setOracle] = useState(null);
-            const [bootLogs, setBootLogs] = useState([]);
-            
-            // STUDIO STATES
-            const [showNexus, setShowNexus] = useState(false);
-            const [activeLens, setActiveLens] = useState('STD');
-            const [xrayActive, setXrayActive] = useState(false);
-            const [lightPos, setLightPos] = useState({ x: 50, y: 30 });
-            const [showExchange, setShowExchange] = useState(false);
-            const [user, setUser] = useState(null);
-
-            // AUTH
-            const { user: authUser, signIn } = useAuth();
-            useEffect(() => { if (authUser) setUser(authUser); }, [authUser]);
-
-            // Logic: Context Aware Transition
-            useEffect(() => {
-                if (user && view === 'LOGIN') {
-                    setView('INCUBATION');
-                }
-            }, [user, view]);
-
-            // PATCHED BRAIN LOGIC
-            useEffect(() => {
-                if (script.length > 10 && !oracle) {
-                    let match = 'GENERIC';
-                    const lower = script.toLowerCase();
-                    if (lower.includes('impossible') || lower.includes('stripe') || lower.includes('original')) match = 'ADIDAS';
-                    else if (lower.includes('do it') || lower.includes('swoosh') || lower.includes('air')) match = 'NIKE';
-                    else if (lower.includes('taste') || lower.includes('cola') || lower.includes('red')) match = 'COCA-COLA';
-                    else if (lower.includes('mars') || lower.includes('rocket')) match = 'SPACEX';
-                    else if (lower.includes('einstein') || lower.includes('genius')) match = 'NAT_GEO'; 
-
-                    const score = Math.min(98, 40 + (script.length/2) + (match !== 'GENERIC' ? 20 : 0));
-                    setOracle({ score, value: (score * 1.5).toFixed(0), match });
-                    SoundEngine.playOracle();
-                }
-            }, [script]);
-
-            const handleIgnite = () => {
-                if (script.length < 5) return;
-                SoundEngine.playIgnite();
-                setView('IGNITION');
-                const steps = ["Linking Neural Net...", "Harvesting IP to Nexus...", "Routing to B2B Exchange...", "Rendering Holo-Deck...", "ACCESS GRANTED."];
-                let i = 0;
-                const interval = setInterval(() => {
-                    setBootLogs(p => [...p, steps[i]]); i++;
-                    if (i >= steps.length) { clearInterval(interval); setTimeout(() => { setView('STUDIO'); setTimeout(() => { setShowExchange(true); SoundEngine.playSuccess(); }, 1000); }, 800); }
-                }, 600);
-            };
-
-            const handleLogin = () => {
-                signIn();
-            };
-
-            const handleLogout = async () => {
-                if (window.fbSignOut) await window.fbSignOut(window.auth);
-                setUser(null); setView('LOGIN');
-            };
+        const App = () => {
+            const { user, signIn, loading } = useAuth();
 
             return (
-                <div className="w-full h-screen bg-[#050505] text-[#E5E5E5] font-sans overflow-hidden relative selection:bg-veo-gold selection:text-black flex">
-                    <div className="absolute inset-0 transition-colors duration-[3000ms] pointer-events-none opacity-20" style={{ background: `radial-gradient(circle at 50% 30%, #3B82F6, transparent 70%)` }}></div>
-
-                    {/* PHASE 0: KINETIC SYNC */}
-                    {view === 'KINETIC' && <KineticSync onComplete={() => setView('LOGIN')} />}
-
-                    {/* PHASE 0.5: LOGIN WALL (The Iron Spine) */}
-                    {view === 'LOGIN' && <LoginWall onLogin={handleLogin} />}
-
-                    {/* PHASE 1: INCUBATION */}
-                    {view === 'INCUBATION' && (
-                        <div className="w-full flex-1 flex flex-col items-center justify-center p-6 animate-fade-in relative">
-                            {/* USER STATUS */}
-                            <div className="absolute top-6 right-6 flex items-center gap-3">
-                                <div className="text-right">
-                                    <div className="text-[10px] font-bold text-white">{user?.displayName || "GUEST_USER"}</div>
-                                    <div className="text-[9px] text-[#D4AF37] font-mono">TIER: FREE</div>
-                                </div>
-                                <div className="w-10 h-10 rounded-full bg-gray-800 border border-white/20 flex items-center justify-center text-xs overflow-hidden cursor-pointer" onClick={handleLogout}>
-                                    {user?.photoURL ? <img src={user.photoURL} className="w-full h-full" /> : "U"}
-                                </div>
-                            </div>
-
-                            <div className="relative z-10 w-full max-w-2xl group">
-                                {oracle && <OracleHUD {...oracle} />}
-                                <h1 className="text-5xl md:text-7xl font-serif text-center mb-2 tracking-tighter">Direct Your <span className="italic season-banner">Dreams.</span></h1>
-                                <p className="text-center text-[10px] font-mono text-veo-gold uppercase tracking-[0.4em] mb-8">Season 1: Neon Genesis</p>
-                                <div className="flex justify-center gap-4 mb-6">
-                                    {['AUTEUR', 'TITAN'].map(p => (<button key={p} onClick={() => { setPersona(p); SoundEngine.playClick(); }} className={`text-[10px] font-bold px-3 py-1 rounded border ${persona === p ? 'bg-veo-gold/20 border-veo-gold text-veo-gold' : 'border-white/10 text-gray-500'}`}>{p}</button>))}
-                                </div>
-                                <div className="relative bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-                                    <textarea value={script} onChange={(e) => setScript(e.target.value)} placeholder="Describe your vision..." className="w-full h-48 bg-transparent p-8 text-xl font-serif text-white placeholder-gray-700 resize-none focus:outline-none" autoFocus spellCheck="false" />
-                                    <div className="oracle-scanner pointer-events-none"></div>
-                                </div>
-                                <div className="mt-8 flex justify-center"><button onClick={handleIgnite} disabled={script.length < 5} className={`btn-ignite text-black px-12 py-5 rounded-full font-bold text-xs tracking-[0.2em] flex items-center gap-3 ${script.length < 5 ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'}`}><Icon name="Sparkles" size={16} /> IGNITE</button></div>
-                            </div>
+                <div className="h-screen w-full flex items-center justify-center bg-black px-6">
+                    <div className="w-full max-w-sm glass-panel p-10 rounded-2xl text-center space-y-8 border border-white/10 shadow-2xl">
+                        <div className="w-14 h-14 bg-white/5 border border-[#D4AF37] rounded-full flex items-center justify-center mx-auto shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+                            <Icon name="lock" size={24} className="text-[#D4AF37]" />
                         </div>
-                    )}
-
-                    {view === 'IGNITION' && (
-                        <div className="w-full flex-1 absolute inset-0 bg-black z-50 flex flex-col items-center justify-center font-mono">
-                            <div className="w-80 space-y-2 h-32 overflow-hidden border-l border-white/10 pl-4">{bootLogs.map((log, i) => (<div key={i} className="text-[10px] text-veo-gold animate-slide-up">> {log}</div>))}</div>
+                        <div>
+                            <h2 className="text-2xl font-serif text-white tracking-widest uppercase">Neural Link</h2>
+                            <p className="text-[10px] text-white/30 font-mono uppercase mt-2 tracking-[0.2em]">CineGenesis Clean Slate</p>
                         </div>
-                    )}
-
-                    {/* PHASE 3: STUDIO */}
-                    {view === 'STUDIO' && (
-                        <div className="w-full flex-1 flex flex-col relative bg-[#020202] animate-fade-in">
-                            
-                            {showExchange && (
-                                <div className="absolute top-20 right-6 z-[100] bg-[#111] border border-white/10 rounded-xl p-3 w-72 shadow-2xl animate-slide-left">
-                                    <div className="flex justify-between items-center mb-2"><span className="text-[10px] font-bold text-white flex items-center gap-2"><Icon name="Network" size={12} className="text-[#3B82F6]" /> B2B ROUTING</span><button onClick={() => setShowExchange(false)} className="text-gray-500">✕</button></div>
-                                    <div className="text-[10px] text-gray-400 bg-white/5 p-2 rounded mb-2">Asset routed to <span className="text-white font-bold">OpenAI_Training_Node</span>.</div>
-                                    <div className="text-[9px] font-mono text-veo-green font-bold text-center">+150 FLUX (70% SPLIT)</div>
-                                </div>
-                            )}
-
-                            <div className="h-14 border-b border-white/10 flex justify-between items-center px-6 bg-black/40 z-10">
-                                <div className="flex gap-4 items-center">
-                                    <div className="text-[10px] font-mono text-gray-500">GENESIS_01 // {persona}</div>
-                                    <div className="h-4 w-[1px] bg-white/10"></div>
-                                    <div className="flex gap-2">
-                                        {['STD', 'NOIR', 'NEON'].map(l => (<button key={l} onClick={() => { setActiveLens(l); SoundEngine.playClick(); }} className={`px-2 py-1 rounded border text-[9px] font-bold ${activeLens === l ? 'lens-active' : 'border-white/10 text-gray-500'}`}>{l}</button>))}
-                                    </div>
-                                    <button onClick={() => { setXrayActive(!xrayActive); SoundEngine.playXray(); }} className={`flex items-center gap-2 px-3 py-1 rounded text-[9px] font-bold border transition-all ${xrayActive ? 'bg-veo-green/20 border-veo-green text-veo-green animate-pulse' : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'}`}><Icon name="Grid" size={10} /> X-RAY</button>
-                                </div>
-                                <button onClick={() => setShowNexus(!showNexus)} className="bg-veo-gold/10 text-veo-gold px-3 py-1.5 rounded-full text-[10px] font-bold flex items-center gap-2 border border-veo-gold/30"><Icon name="Activity" size={12} /> NEXUS HUD</button>
-                            </div>
-
-                            <div className="flex-1 flex items-center justify-center bg-black relative overflow-hidden cursor-crosshair" onMouseMove={(e) => { if (e.buttons === 1) { const rect = e.currentTarget.getBoundingClientRect(); setLightPos({ x: (e.clientX - rect.left)/rect.width*100, y: (e.clientY - rect.top)/rect.height*100 }); } }}>
-                                <div className={`absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none ${xrayActive ? 'xray-visible' : 'opacity-0'}`}><div className="w-[200%] h-[200%] xray-grid"></div></div>
-                                <div className={`relative w-full max-w-4xl aspect-video bg-gray-900 rounded-lg border border-veo-gold/20 shadow-2xl overflow-hidden group z-10 transition-all duration-500 ${activeLens === 'NOIR' ? 'filter-noir' : activeLens === 'NEON' ? 'filter-neon' : ''} ${xrayActive ? 'xray-active' : ''}`}>
-                                    <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1200")' }}></div>
-                                    <div className="absolute inset-0 pointer-events-none mix-blend-overlay" style={{ background: `radial-gradient(circle at ${lightPos.x}% ${lightPos.y}%, rgba(255,255,255,0.4) 0%, transparent 60%)` }}></div>
-                                    {!xrayActive && <div className="light-orb" style={{ left: `${lightPos.x}%`, top: `${lightPos.y}%` }}></div>}
-                                    <div className="absolute bottom-4 right-4 text-white/30 font-black text-2xl font-sans tracking-tighter select-none pointer-events-none mix-blend-overlay">CINEGENESIS</div>
-                                </div>
-                            </div>
-
-                            <div className="h-32 border-t border-white/5 bg-black/40 p-4 flex flex-col gap-2 relative z-10">
-                                <div className="flex justify-between items-center text-[10px] font-mono text-gray-500"><span>SEQUENCING</span><span>0 CREDITS</span></div>
-                                <div className="flex-1 flex gap-2 overflow-x-auto pb-1">
-                                    <div className="w-48 h-full rounded bg-white/5 border border-white/10 relative"><div className="absolute top-2 left-2 text-[9px] font-bold text-white">SCENE 01</div></div>
-                                    <div className="w-48 h-full rounded border border-veo-gold bg-black/20 relative flex items-center justify-center cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => SoundEngine.playClick()}><div className="flex flex-col items-center gap-1"><Icon name="Lock" size={14} className="text-veo-gold" /><span className="text-[8px] text-veo-gold font-bold">UNLOCK SCENE 02</span></div></div>
-                                </div>
-                            </div>
+                        
+                        {user ? (
+                            <div className="text-green-400 font-mono text-xs animate-pulse">IDENTITY VERIFIED: {user.displayName}</div>
+                        ) : (
+                            <button onClick={signIn} disabled={loading} className="w-full py-4 btn-ignite text-[10px] font-bold tracking-[0.3em] rounded-xl uppercase flex items-center justify-center gap-2">
+                                {loading ? "LOADING..." : <><Icon name="login" size={14}/> CONNECT IDENTITY</>}
+                            </button>
+                        )}
+                        
+                        <div className="pt-4 border-t border-white/5">
+                            <p className="text-[8px] font-mono text-white/20 uppercase tracking-widest leading-loose">Secure Checkpoint v19.2</p>
                         </div>
-                    )}
-
-                    <NexusHUD isOpen={showNexus} onClose={() => setShowNexus(false)} balance={14670} />
+                    </div>
                 </div>
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<CineGenesisApp />);
+        root.render(<App />);
     </script>
 </body>
 </html>
